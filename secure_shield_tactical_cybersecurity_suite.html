@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SECURE SHIELD // Underground Tactical Cyber Defense Suite</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Orbitron & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;600;800&family=Orbitron:wght@600;800;900&display=swap" rel="stylesheet">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            tactical: {
+              black: '#07080b',
+              surface: '#0e1117',
+              panel: '#131822',
+              card: '#161c27',
+              border: '#1f293d',
+              neonGreen: '#00ff66',
+              neonGreenGlow: '#00ff6633',
+              cyberViolet: '#a855f7',
+              cyberCyan: '#00f0ff',
+              danger: '#ff0055',
+              warning: '#f59e0b'
+            }
+          },
+          fontFamily: {
+            display: ['Orbitron', 'sans-serif'],
+            tech: ['Chakra Petch', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+            sans: ['Inter', 'sans-serif'],
+          },
+          boxShadow: {
+            'neon-green': '0 0 25px -5px rgba(0, 255, 102, 0.4)',
+            'neon-violet': '0 0 25px -5px rgba(168, 85, 247, 0.4)',
+            'neon-danger': '0 0 25px -5px rgba(255, 0, 85, 0.5)',
+            'cyber-inset': 'inset 0 0 15px rgba(0, 255, 102, 0.15)'
+          },
+          animation: {
+            'scanline': 'scanline 8s linear infinite',
+            'pulse-fast': 'pulse 1.2s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'radar-spin': 'spin 4s linear infinite',
+          },
+          keyframes: {
+            scanline: {
+              '0%': { transform: 'translateY(-100%)' },
+              '100%': { transform: 'translateY(1000%)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Cyberpunk / Dark Underground Grid Background */
+    body {
+      background-color: #07080b;
+      color: #e2e8f0;
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(0, 255, 102, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 30%, rgba(168, 85, 247, 0.08) 0%, transparent 40%),
+        linear-gradient(rgba(14, 17, 23, 0.8) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(14, 17, 23, 0.8) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 40px 40px, 40px 40px;
+    }
+
+    /* Scanline screen effect overlay */
+    .scanlines-overlay {
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0),
+        rgba(255,255,255,0) 50%,
+        rgba(0, 0, 0, 0.3) 50%,
+        rgba(0, 0, 0, 0.3)
+      );
+      background-size: 100% 4px;
+      pointer-events: none;
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #07080b;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #1f293d;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #00ff66;
+    }
+
+    /* Cut corner tactical chamfer */
+    .chamfer-btn {
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    }
+    .chamfer-card {
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 18px 100%, 0 calc(100% - 18px));
+    }
+
+    /* Radar sweep animation */
+    .radar-sweep {
+      background: conic-gradient(from 0deg, transparent 0deg, rgba(0, 255, 102, 0.25) 60deg, transparent 65deg);
+    }
+  </style>
+</head>
+<body class="font-sans antialiased selection:bg-tactical-neonGreen selection:text-black min-h-screen relative overflow-x-hidden">
+
+  <!-- Scanline & Ambient Overlay -->
+  <div class="fixed inset-0 scanlines-overlay z-50 pointer-events-none opacity-40"></div>
+
+  <!-- Top Threat Telemetry Ticker -->
+  <div class="bg-black/90 border-b border-tactical-border/70 text-xs font-mono py-1.5 px-4 text-slate-400 overflow-hidden sticky top-0 z-40 backdrop-blur-md flex items-center justify-between">
+    <div class="flex items-center space-x-3 w-full overflow-hidden">
+      <span class="inline-flex items-center px-2 py-0.5 rounded text-[10px] font-bold bg-tactical-danger/20 text-tactical-danger border border-tactical-danger/40 animate-pulse-fast tracking-widest shrink-0">
+        <span class="w-1.5 h-1.5 rounded-full bg-tactical-danger mr-1.5 inline-block"></span>DEFCON 2 // ACTIVE THREATS
+      </span>
+      <div id="liveTickerText" class="truncate text-slate-300 font-tech uppercase tracking-wide text-xs">
+        [THREAT RADAR] Blocked 14,920 Aussie banking credential injections | Phishing cluster detected in Sydney Node #4 | Ransomware payload neutralized (LockBit 4.0 clone)
+      </div>
+    </div>
+    <div class="hidden md:flex items-center space-x-4 shrink-0 font-mono text-[11px] text-tactical-neonGreen pl-4">
+      <span>SHIELD CORE: <strong class="text-white">v9.4.2-TITAN</strong></span>
+      <span class="text-slate-600">|</span>
+      <span>STATUS: <strong class="text-tactical-neonGreen">FORTIFIED</strong></span>
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <nav class="border-b border-tactical-border bg-tactical-surface/90 backdrop-blur-lg sticky top-8 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <!-- Logo & Brand -->
+        <a href="#" class="flex items-center space-x-3 group">
+          <div class="relative w-11 h-11 rounded-lg bg-gradient-to-br from-tactical-neonGreen to-tactical-cyberCyan flex items-center justify-center p-0.5 shadow-neon-green">
+            <div class="w-full h-full bg-tactical-black rounded-[6px] flex items-center justify-center">
+              <i data-lucide="shield-alert" class="w-6 h-6 text-tactical-neonGreen group-hover:scale-110 transition-transform"></i>
+            </div>
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <span class="font-display font-black text-xl tracking-wider text-white">SECURE</span>
+              <span class="font-display font-black text-xl tracking-wider text-tactical-neonGreen">SHIELD</span>
+              <span class="text-[9px] font-mono uppercase bg-tactical-cyberViolet/30 text-tactical-cyberViolet border border-tactical-cyberViolet/50 px-1.5 py-0.5 rounded ml-1 font-bold">GANGSTER GRADE</span>
+            </div>
+            <p class="text-[10px] font-mono tracking-widest text-slate-400 uppercase">Lockdown Cybersecurity Suite</p>
+          </div>
+        </a>
+
+        <!-- Desktop Nav Links -->
+        <div class="hidden lg:flex items-center space-x-6 text-sm font-tech tracking-wider uppercase text-slate-300">
+          <a href="#matrix" class="hover:text-tactical-neonGreen transition-colors flex items-center space-x-1">
+            <i data-lucide="layout-grid" class="w-4 h-4 text-tactical-neonGreen"></i>
+            <span>Arsenal Matrix</span>
+          </a>
+          <a href="#scanner-demo" class="hover:text-tactical-neonGreen transition-colors flex items-center space-x-1">
+            <i data-lucide="scan" class="w-4 h-4 text-tactical-neonGreen"></i>
+            <span>Live Scanner</span>
+          </a>
+          <a href="#aussie-radar" class="hover:text-tactical-neonGreen transition-colors flex items-center space-x-1">
+            <i data-lucide="map-pin" class="w-4 h-4 text-tactical-neonGreen"></i>
+            <span>Aussie Breaches</span>
+          </a>
+          <a href="#password-lab" class="hover:text-tactical-neonGreen transition-colors flex items-center space-x-1">
+            <i data-lucide="key-round" class="w-4 h-4 text-tactical-neonGreen"></i>
+            <span>Password Lab</span>
+          </a>
+          <a href="#pricing" class="hover:text-tactical-neonGreen transition-colors flex items-center space-x-1">
+            <i data-lucide="download" class="w-4 h-4 text-tactical-neonGreen"></i>
+            <span>Buy & Download</span>
+          </a>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex items-center space-x-3">
+          <button onclick="openAiAdvisor()" class="relative inline-flex items-center space-x-2 px-3 py-2 text-xs font-mono rounded bg-tactical-cyberViolet/10 text-tactical-cyberViolet border border-tactical-cyberViolet/40 hover:bg-tactical-cyberViolet/25 transition-all">
+            <i data-lucide="bot" class="w-4 h-4 text-tactical-cyberViolet"></i>
+            <span class="hidden sm:inline">SHIELD AI ADVISOR</span>
+            <span class="flex h-2 w-2 relative">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tactical-cyberViolet opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-tactical-cyberViolet"></span>
+            </span>
+          </button>
+
+          <a href="#pricing" class="chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-bold text-xs sm:text-sm px-5 py-2.5 transition-all transform active:scale-95 shadow-neon-green flex items-center space-x-2">
+            <i data-lucide="shield-check" class="w-4 h-4 stroke-[2.5]"></i>
+            <span>ARM SYSTEM NOW</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <header class="relative pt-12 pb-24 overflow-hidden border-b border-tactical-border/60">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-12 gap-12 items-center">
+        <!-- Hero Text -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-tactical-panel border border-tactical-neonGreen/40 shadow-cyber-inset">
+            <span class="w-2 h-2 rounded-full bg-tactical-neonGreen animate-ping"></span>
+            <span class="text-xs font-mono tracking-widest text-tactical-neonGreen font-semibold uppercase">UNCOMPROMISED CYBER STREET ENFORCER</span>
+          </div>
+
+          <h1 class="text-4xl sm:text-6xl lg:text-7xl font-display font-black tracking-tight leading-none text-white uppercase">
+            NO MERCY FOR <br>
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-tactical-neonGreen via-tactical-cyberCyan to-tactical-cyberViolet drop-shadow-[0_0_20px_rgba(0,255,102,0.3)]">MALWARE & SCAMS</span>
+          </h1>
+
+          <p class="text-base sm:text-lg text-slate-300 font-sans max-w-2xl leading-relaxed">
+            Standard antivirus is soft. <strong class="text-white">SECURE SHIELD</strong> acts like digital titanium armor. Deep PC kernel scanning, ruthless Australian breach defense, real-time banking fraud radar, and phishing kill-switches. Built for operators who demand total impunity online.
+          </p>
+
+          <!-- Status Card -->
+          <div class="p-4 rounded-xl bg-tactical-panel/80 border border-tactical-border grid grid-cols-2 sm:grid-cols-4 gap-4 font-mono text-center">
+            <div class="border-r border-tactical-border/60 pr-2">
+              <span class="text-[11px] text-slate-400 block">THREAT INTEL</span>
+              <span class="text-tactical-neonGreen font-bold text-sm">99.98% BLOCKED</span>
+            </div>
+            <div class="border-r border-tactical-border/60 pr-2">
+              <span class="text-[11px] text-slate-400 block">AUS DATABASE</span>
+              <span class="text-tactical-cyberCyan font-bold text-sm">74M+ RECORDS</span>
+            </div>
+            <div class="border-r border-tactical-border/60 pr-2">
+              <span class="text-[11px] text-slate-400 block">HEURISTIC ENGINE</span>
+              <span class="text-tactical-cyberViolet font-bold text-sm">ZERO-DAY AI</span>
+            </div>
+            <div>
+              <span class="text-[11px] text-slate-400 block">SYSTEM OVERHEAD</span>
+              <span class="text-emerald-400 font-bold text-sm">&lt; 0.4% CPU</span>
+            </div>
+          </div>
+
+          <!-- CTA Buttons -->
+          <div class="flex flex-wrap items-center gap-4 pt-2">
+            <a href="#pricing" class="chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-bold px-7 py-3.5 text-base transition-all shadow-neon-green flex items-center space-x-3">
+              <i data-lucide="zap" class="w-5 h-5 fill-black"></i>
+              <span>GET SECURE SHIELD PRO</span>
+            </a>
+            <button onclick="scrollToScanner()" class="chamfer-btn bg-tactical-panel hover:bg-tactical-card text-white border border-tactical-border hover:border-tactical-neonGreen/60 font-tech font-bold px-6 py-3.5 text-base transition-all flex items-center space-x-2">
+              <i data-lucide="scan-line" class="w-5 h-5 text-tactical-neonGreen"></i>
+              <span>LAUNCH LIVE SCANNER DEMO</span>
+            </button>
+          </div>
+
+          <div class="flex items-center space-x-6 text-xs font-mono text-slate-400 pt-1">
+            <span class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-1"></i> Windows 10/11 & macOS</span>
+            <span class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-1"></i> Instant Digital Delivery</span>
+            <span class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-1"></i> 30-Day Money-Back Vault</span>
+          </div>
+        </div>
+
+        <!-- Hero Graphic: Tactical HUD HUD -->
+        <div class="lg:col-span-5 relative">
+          <div class="relative w-full max-w-md mx-auto aspect-square rounded-2xl bg-gradient-to-b from-tactical-panel to-tactical-black border-2 border-tactical-neonGreen/40 p-5 shadow-neon-green overflow-hidden">
+            <!-- Background Circular Radar -->
+            <div class="absolute inset-4 rounded-full border border-tactical-border/60"></div>
+            <div class="absolute inset-16 rounded-full border border-tactical-border/40"></div>
+            <div class="absolute inset-28 rounded-full border border-tactical-border/20"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+              <div class="w-full h-full rounded-full radar-sweep animate-radar-spin opacity-40"></div>
+            </div>
+
+            <!-- Central HUD Shield Graphic -->
+            <div class="relative z-10 w-full h-full flex flex-col justify-between">
+              <!-- Top HUD Bar -->
+              <div class="flex items-center justify-between font-mono text-[10px] text-slate-400 border-b border-tactical-border/80 pb-2">
+                <span class="text-tactical-neonGreen">NODE: AUS-EAST-SYDNEY</span>
+                <span class="animate-pulse text-tactical-cyberCyan">RADAR ACTIVE</span>
+              </div>
+
+              <!-- Center Shield Badge -->
+              <div class="flex flex-col items-center justify-center my-auto text-center space-y-3">
+                <div class="relative">
+                  <div class="w-24 h-24 rounded-2xl bg-tactical-black/80 border-2 border-tactical-neonGreen flex items-center justify-center shadow-neon-green">
+                    <i data-lucide="shield-check" class="w-14 h-14 text-tactical-neonGreen animate-pulse"></i>
+                  </div>
+                  <!-- Floating Warning Pings -->
+                  <div class="absolute -top-2 -right-2 bg-tactical-danger text-white text-[9px] font-mono font-bold px-2 py-0.5 rounded-full border border-white/20 animate-bounce">
+                    12 DEFENSES UP
+                  </div>
+                </div>
+
+                <div>
+                  <h3 class="font-display font-black text-lg text-white tracking-widest">IMPERVIOUS MATRIX</h3>
+                  <p class="font-mono text-xs text-tactical-neonGreen tracking-widest">THREAT SHIELD ACTIVE // 0 BREACHES</p>
+                </div>
+              </div>
+
+              <!-- Bottom Status Indicators -->
+              <div class="grid grid-cols-2 gap-2 font-mono text-[10px] pt-2 border-t border-tactical-border/80">
+                <div class="bg-tactical-black/60 p-2 rounded border border-tactical-border">
+                  <span class="text-slate-500 block">MALWARE FIREWALL</span>
+                  <span class="text-emerald-400 font-bold flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 mr-1.5 inline-block"></span>PROTECTED
+                  </span>
+                </div>
+                <div class="bg-tactical-black/60 p-2 rounded border border-tactical-border">
+                  <span class="text-slate-500 block">IDENTITY RADAR</span>
+                  <span class="text-tactical-cyberCyan font-bold flex items-center">
+                    <span class="w-1.5 h-1.5 rounded-full bg-tactical-cyberCyan mr-1.5 inline-block"></span>STANDBY 24/7
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- LIVE INTERACTIVE SCANNER SECTION -->
+  <section id="scanner-demo" class="py-20 bg-tactical-surface relative border-b border-tactical-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-12">
+        <span class="text-xs font-mono text-tactical-neonGreen tracking-widest uppercase bg-tactical-neonGreen/10 px-3 py-1 rounded border border-tactical-neonGreen/30">
+          REAL-TIME ENGINE INTERACTIVE TRIAL
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-display font-black text-white mt-3 uppercase tracking-tight">
+          TEST RUN THE <span class="text-tactical-neonGreen">TACTICAL SCANNER</span>
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2 font-sans">
+          Trigger our simulated heuristic kernel scanner right in your browser. Watch it inspect system processes, hard drive boot sectors, memory dumps, and zero-day trojans.
+        </p>
+      </div>
+
+      <!-- Tactical Scanner Console Widget -->
+      <div class="max-w-4xl mx-auto bg-tactical-black rounded-xl border border-tactical-border overflow-hidden shadow-2xl">
+        <!-- Terminal Header -->
+        <div class="bg-tactical-panel px-4 py-3 border-b border-tactical-border flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-tactical-danger inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-tactical-warning inline-block"></span>
+            <span class="w-3 h-3 rounded-full bg-tactical-neonGreen inline-block"></span>
+            <span class="font-mono text-xs text-slate-300 ml-2 font-semibold">SECURE_SHIELD_SCAN_AGENT v9.42 [TERMINAL]</span>
+          </div>
+          <div class="flex items-center space-x-3 text-xs font-mono">
+            <span id="scanStatusBadge" class="px-2 py-0.5 rounded bg-slate-800 text-slate-400 border border-slate-700">STANDBY</span>
+            <button id="toggleAudioBtn" onclick="toggleScanAudio()" title="Toggle Sound Feedback" class="text-slate-400 hover:text-tactical-neonGreen transition-colors">
+              <i data-lucide="volume-2" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Terminal Body & Progress -->
+        <div class="p-6 space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 font-mono text-xs">
+            <div class="bg-tactical-card p-3 rounded border border-tactical-border">
+              <span class="text-slate-500 block">CURRENT TARGET</span>
+              <span id="scanTargetText" class="text-white font-bold text-sm truncate">System Memory / C:\System32</span>
+            </div>
+            <div class="bg-tactical-card p-3 rounded border border-tactical-border">
+              <span class="text-slate-500 block">OBJECTS SCANNED</span>
+              <span id="scanObjectCount" class="text-tactical-cyberCyan font-bold text-sm">0 / 48,290</span>
+            </div>
+            <div class="bg-tactical-card p-3 rounded border border-tactical-border">
+              <span class="text-slate-500 block">THREATS DETECTED & ISOLATED</span>
+              <span id="threatsFoundCount" class="text-tactical-danger font-bold text-sm">0 QUARANTINED</span>
+            </div>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-mono">
+              <span class="text-slate-400" id="progressLabel">READY FOR INITIALIZATION</span>
+              <span class="text-tactical-neonGreen font-bold" id="progressPercentage">0%</span>
+            </div>
+            <div class="w-full bg-slate-900 h-3 rounded-full overflow-hidden border border-tactical-border p-0.5">
+              <div id="scanProgressBar" class="h-full bg-gradient-to-r from-tactical-neonGreen to-tactical-cyberCyan rounded-full transition-all duration-150 w-0"></div>
+            </div>
+          </div>
+
+          <!-- Live Log Output Box -->
+          <div id="scannerConsoleLog" class="h-44 bg-tactical-surface rounded border border-tactical-border/80 p-3 font-mono text-xs overflow-y-auto space-y-1 text-slate-300">
+            <div class="text-slate-500">> System Ready. Click 'START DEEP SYSTEM SCAN' to execute malware and hard disk integrity sweep.</div>
+          </div>
+
+          <!-- Scanner Controls -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-2">
+            <div class="flex items-center space-x-3">
+              <button id="startScanBtn" onclick="startSystemScan('deep')" class="chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-bold px-6 py-2.5 text-sm transition-all shadow-neon-green flex items-center space-x-2">
+                <i data-lucide="play" class="w-4 h-4 fill-black"></i>
+                <span>START DEEP SCAN</span>
+              </button>
+              <button onclick="startSystemScan('disk')" class="chamfer-btn bg-tactical-card hover:bg-slate-800 text-slate-200 border border-tactical-border font-tech px-4 py-2.5 text-sm transition-all flex items-center space-x-2">
+                <i data-lucide="hard-drive" class="w-4 h-4 text-tactical-cyberCyan"></i>
+                <span>HARD DISK SECTOR CHECK</span>
+              </button>
+            </div>
+            <button onclick="cleanQuarantinedThreats()" id="quarantineBtn" class="hidden text-xs font-mono px-4 py-2 rounded bg-tactical-danger/20 text-tactical-danger border border-tactical-danger/50 hover:bg-tactical-danger hover:text-white transition-all">
+              EXECUTE INSTANT PURGE ALL (2 DETECTED)
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARSENAL FEATURE MATRIX (ALL 10+ MANDATORY FEATURES) -->
+  <section id="matrix" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono text-tactical-cyberViolet tracking-widest uppercase bg-tactical-cyberViolet/10 px-3 py-1 rounded border border-tactical-cyberViolet/30">
+          ALL-IN-ONE DEFENSE APPARATUS
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-display font-black text-white mt-3 uppercase tracking-tight">
+          THE GANGSTER <span class="text-transparent bg-clip-text bg-gradient-to-r from-tactical-neonGreen to-tactical-cyberCyan">ARSENAL</span>
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          Every tool engineered with zero bloat and ruthless tactical efficiency. You control the perimeter.
+        </p>
+      </div>
+
+      <!-- Feature Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+        <!-- 1. PC Scan & Deep Malware Checker -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-neonGreen/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-neonGreen/40 flex items-center justify-center text-tactical-neonGreen mb-4 shadow-neon-green">
+            <i data-lucide="bug" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Deep Malware Checker</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Zero-day heuristic scanner that hunts rootkits, spyware, ransomware worms, and background crypto-miners before they hit your CPU.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-neonGreen flex items-center space-x-1">
+            <i data-lucide="shield" class="w-3.5 h-3.5"></i>
+            <span>Real-time Kernel Lockdown</span>
+          </div>
+        </div>
+
+        <!-- 2. Hard Disk Check & System Integrity -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberCyan/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-cyberCyan/40 flex items-center justify-center text-tactical-cyberCyan mb-4">
+            <i data-lucide="hard-drive-download" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Hard Disk Integrity Guard</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Monitors S.M.A.R.T telemetry, hidden bad sectors, MBR/GPT partition security, and shields SSD flash cells from destructive malware overwrites.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-cyberCyan flex items-center space-x-1">
+            <i data-lucide="activity" class="w-3.5 h-3.5"></i>
+            <span>Low-level Sector Scrutiny</span>
+          </div>
+        </div>
+
+        <!-- 3. Aussie Breaches Tracker -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-danger/60 transition-all group relative overflow-hidden bg-gradient-to-br from-tactical-card to-tactical-panel">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-danger/40 flex items-center justify-center text-tactical-danger mb-4 shadow-neon-danger">
+            <i data-lucide="map-pin" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <div class="flex items-center space-x-2 mb-2">
+            <h3 class="font-display font-bold text-lg text-white uppercase tracking-wide">Aussie Breaches Tracker</h3>
+            <span class="text-[9px] font-mono bg-tactical-danger/20 text-tactical-danger px-1.5 py-0.5 rounded border border-tactical-danger/30 font-bold">EXCLUSIVE</span>
+          </div>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Custom-built intelligence feed tracking Australian telco, health, banking, and government database exposures (Medibank, Optus, Latitude style leaks).
+          </p>
+          <a href="#aussie-radar" class="font-mono text-[11px] text-tactical-danger flex items-center space-x-1 hover:underline">
+            <i data-lucide="search" class="w-3.5 h-3.5"></i>
+            <span>Run Free Aussie Leak Audit &rarr;</span>
+          </a>
+        </div>
+
+        <!-- 4. Card Fraud Radar -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-warning/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-warning/40 flex items-center justify-center text-tactical-warning mb-4">
+            <i data-lucide="credit-card" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Card Fraud Radar</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Blocks unauthorized digital skimming, web-based keyloggers during checkout, and monitors underground dark web card dumps for your BIN numbers.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-warning flex items-center space-x-1">
+            <i data-lucide="lock" class="w-3.5 h-3.5"></i>
+            <span>Anti-Skim Virtual Vault</span>
+          </div>
+        </div>
+
+        <!-- 5. Phishing Radar & Kill-Switch -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-neonGreen/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-neonGreen/40 flex items-center justify-center text-tactical-neonGreen mb-4 shadow-neon-green">
+            <i data-lucide="radio" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Phishing Radar</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Instant heuristic inspection of fake SMS, clone banking login pages, and deceptive homograph URLs before credentials can be intercepted.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-neonGreen flex items-center space-x-1">
+            <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
+            <span>0.02ms Domain Inspection</span>
+          </div>
+        </div>
+
+        <!-- 6. Password Lab & Breach Entropy -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberViolet/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-cyberViolet/40 flex items-center justify-center text-tactical-cyberViolet mb-4 shadow-neon-violet">
+            <i data-lucide="fingerprint" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Password Lab & Vault</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Stress-test passwords against trillion-hash GPU cluster dictionaries and generate unbreakable 256-bit military cipher credentials.
+          </p>
+          <a href="#password-lab" class="font-mono text-[11px] text-tactical-cyberViolet flex items-center space-x-1 hover:underline">
+            <i data-lucide="sliders" class="w-3.5 h-3.5"></i>
+            <span>Test In Interactive Lab &rarr;</span>
+          </a>
+        </div>
+
+        <!-- 7. Email Guard & Leak Shield -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberCyan/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-cyberCyan/40 flex items-center justify-center text-tactical-cyberCyan mb-4">
+            <i data-lucide="mail-check" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Email Guard</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Sanitizes incoming attachments in a secure sandbox, detects spear-phishing signatures, and masks your inbox with tactical burner aliases.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-cyberCyan flex items-center space-x-1">
+            <i data-lucide="inbox" class="w-3.5 h-3.5"></i>
+            <span>Sandbox Attachment Detonation</span>
+          </div>
+        </div>
+
+        <!-- 8. Real-time Threat Feed -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-neonGreen/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-neonGreen/40 flex items-center justify-center text-tactical-neonGreen mb-4">
+            <i data-lucide="activity" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Threat Feed Telemetry</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Pulls live threat indicators directly from global honeypots, cybersecurity syndicates, and INTERPOL zero-day feeds straight to your desktop.
+          </p>
+          <div class="font-mono text-[11px] text-tactical-neonGreen flex items-center space-x-1">
+            <i data-lucide="rss" class="w-3.5 h-3.5"></i>
+            <span>Continuous Peer Updates</span>
+          </div>
+        </div>
+
+        <!-- 9. Shield AI Tactical Advisor -->
+        <div class="chamfer-card bg-tactical-card p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberViolet/60 transition-all group relative overflow-hidden">
+          <div class="w-12 h-12 rounded-lg bg-tactical-black border border-tactical-cyberViolet/40 flex items-center justify-center text-tactical-cyberViolet mb-4 shadow-neon-violet">
+            <i data-lucide="bot" class="w-6 h-6 group-hover:scale-110 transition-transform"></i>
+          </div>
+          <h3 class="font-display font-bold text-lg text-white mb-2 uppercase tracking-wide">Shield AI Advisor</h3>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed mb-4">
+            Your on-call digital mob consigliere. Ask tactical questions about suspicious files, network intrusions, and custom device lockdown procedures.
+          </p>
+          <button onclick="openAiAdvisor()" class="font-mono text-[11px] text-tactical-cyberViolet flex items-center space-x-1 hover:underline">
+            <i data-lucide="message-square-code" class="w-3.5 h-3.5"></i>
+            <span>Consult AI Advisor Now &rarr;</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- AUSSIE BREACHES RADAR LOOKUP (INTERACTIVE TOOL) -->
+  <section id="aussie-radar" class="py-20 bg-tactical-surface border-y border-tactical-border relative">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="border border-tactical-border bg-tactical-panel rounded-2xl p-6 sm:p-10 shadow-2xl relative overflow-hidden">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-tactical-border/70 pb-6 mb-8">
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="inline-block w-2.5 h-2.5 rounded-full bg-tactical-danger animate-ping"></span>
+              <span class="font-mono text-xs text-tactical-danger font-bold tracking-widest uppercase">AUSTRALASIAN SURVEILLANCE & LEAK AUDIT</span>
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-display font-bold text-white mt-1 uppercase">AUSSIE BREACHES RADAR</h2>
+            <p class="text-xs sm:text-sm text-slate-400 mt-1">Cross-reference your email or mobile against known Australian telco & corporate leak repositories.</p>
+          </div>
+          <div class="bg-tactical-black/80 px-4 py-2.5 rounded-lg border border-tactical-border font-mono text-xs text-slate-300">
+            <span class="text-slate-500 block text-[10px]">VERIFIED DB SOURCES</span>
+            <span class="text-tactical-neonGreen font-bold">OPTUS / MEDIBANK / LATITUDE / CANVA</span>
+          </div>
+        </div>
+
+        <!-- Search Form -->
+        <div class="space-y-4">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <div class="relative flex-1">
+              <i data-lucide="search" class="w-5 h-5 text-slate-500 absolute left-4 top-1/2 -translate-y-1/2"></i>
+              <input 
+                id="aussieSearchInput" 
+                type="text" 
+                placeholder="Enter email (e.g. mate@sydney.com.au) or mobile (+61 4...)" 
+                class="w-full pl-12 pr-4 py-3.5 bg-tactical-black rounded-lg border border-tactical-border text-white placeholder-slate-500 focus:outline-none focus:border-tactical-neonGreen font-mono text-sm shadow-inner"
+              />
+            </div>
+            <button 
+              onclick="executeAussieBreachLookup()" 
+              class="chamfer-btn bg-tactical-danger hover:bg-rose-600 text-white font-display font-bold px-7 py-3.5 text-sm transition-all shadow-neon-danger flex items-center justify-center space-x-2 shrink-0">
+              <i data-lucide="shield-alert" class="w-4 h-4"></i>
+              <span>SCAN AUSSIE LEAKS</span>
+            </button>
+          </div>
+          <p class="text-[11px] font-mono text-slate-500">Query runs against cached hash signatures. We never store or log your queries.</p>
+        </div>
+
+        <!-- Dynamic Results Container -->
+        <div id="aussieResultBox" class="mt-8 hidden p-5 rounded-xl border font-mono text-sm transition-all duration-300">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Sample Quick Click Pills -->
+        <div class="mt-6 pt-4 border-t border-tactical-border/50 flex flex-wrap items-center gap-2">
+          <span class="text-xs font-mono text-slate-400">Quick Test Samples:</span>
+          <button onclick="fillAndCheckBreach('john.doe@victim-demo.com.au')" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-tactical-neonGreen border border-slate-700">john.doe@victim-demo.com.au (Compromised)</button>
+          <button onclick="fillAndCheckBreach('secure.shield.operative@proton.me')" class="text-xs font-mono px-2.5 py-1 rounded bg-slate-800 text-slate-300 hover:text-tactical-neonGreen border border-slate-700">secure.shield.operative@proton.me (Clean)</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PASSWORD LAB & ENTROPY TESTER -->
+  <section id="password-lab" class="py-24 relative">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-2xl mx-auto mb-12">
+        <span class="text-xs font-mono text-tactical-cyberViolet tracking-widest uppercase bg-tactical-cyberViolet/10 px-3 py-1 rounded border border-tactical-cyberViolet/30">
+          CRYPTOGRAPHIC HARDENING
+        </span>
+        <h2 class="text-3xl sm:text-4xl font-display font-black text-white mt-3 uppercase tracking-tight">
+          PASSWORD <span class="text-tactical-cyberViolet">LABORATORY</span>
+        </h2>
+        <p class="text-slate-400 text-sm mt-2">
+          Calculate GPU brute-force crack times, entropy bits, and generate uncrackable gangland-grade passwords on the fly.
+        </p>
+      </div>
+
+      <div class="bg-tactical-card border border-tactical-border rounded-xl p-6 sm:p-8 space-y-6">
+        <!-- Input & Analyzer -->
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-xs font-mono">
+            <span class="text-slate-300">TEST PASS-PHRASE OR PASSWORD</span>
+            <span id="entropyBits" class="text-tactical-cyberViolet font-bold">0 BITS ENTROPY</span>
+          </div>
+          <div class="relative">
+            <input 
+              id="passwordInput" 
+              type="text" 
+              oninput="analyzePasswordStrength()" 
+              placeholder="Type in a password to stress-test..." 
+              class="w-full px-4 py-3.5 bg-tactical-black rounded-lg border border-tactical-border text-white placeholder-slate-600 focus:outline-none focus:border-tactical-cyberViolet font-mono text-sm"
+            />
+            <button onclick="generateSuperPassword()" class="absolute right-2.5 top-1/2 -translate-y-1/2 px-3 py-1.5 rounded bg-tactical-cyberViolet/20 text-tactical-cyberViolet hover:bg-tactical-cyberViolet hover:text-white transition-all text-xs font-mono border border-tactical-cyberViolet/40">
+              GENERATE RANDOM
+            </button>
+          </div>
+        </div>
+
+        <!-- Strength Meter Bar -->
+        <div class="space-y-1.5">
+          <div class="h-2 w-full bg-tactical-black rounded-full overflow-hidden border border-tactical-border/60">
+            <div id="passwordMeterBar" class="h-full w-0 transition-all duration-300 bg-red-500"></div>
+          </div>
+          <div class="flex items-center justify-between font-mono text-xs">
+            <span id="passwordCrackTime" class="text-slate-400">Brute-force crack time: Instant</span>
+            <span id="passwordRatingText" class="font-bold text-red-500">CRITICAL VULNERABILITY</span>
+          </div>
+        </div>
+
+        <!-- Checklist breakdown -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 font-mono text-xs pt-3 border-t border-tactical-border/70">
+          <div id="checkLen" class="p-2 rounded bg-tactical-black/40 border border-slate-800 text-slate-500 flex items-center space-x-1.5">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            <span>12+ Chars</span>
+          </div>
+          <div id="checkNum" class="p-2 rounded bg-tactical-black/40 border border-slate-800 text-slate-500 flex items-center space-x-1.5">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            <span>Numbers</span>
+          </div>
+          <div id="checkUpper" class="p-2 rounded bg-tactical-black/40 border border-slate-800 text-slate-500 flex items-center space-x-1.5">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            <span>Uppercase</span>
+          </div>
+          <div id="checkSym" class="p-2 rounded bg-tactical-black/40 border border-slate-800 text-slate-500 flex items-center space-x-1.5">
+            <i data-lucide="circle" class="w-3.5 h-3.5"></i>
+            <span>Symbols</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SAFETY TIPS & LOCKDOWN PLAYBOOK -->
+  <section class="py-20 bg-tactical-surface border-y border-tactical-border">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-14">
+        <span class="text-xs font-mono text-tactical-neonGreen tracking-widest uppercase bg-tactical-neonGreen/10 px-3 py-1 rounded border border-tactical-neonGreen/30">
+          STREET-SMART PROTOCOLS
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-display font-black text-white mt-3 uppercase tracking-tight">
+          CYBER LOCKDOWN <span class="text-tactical-neonGreen">PLAYBOOK</span>
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          Never fold to cyber extortionists or script-kiddies. Follow the code of absolute digital survival.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-tactical-panel p-6 rounded-xl border border-tactical-border hover:border-tactical-neonGreen/50 transition-all">
+          <div class="text-tactical-neonGreen font-mono text-xl font-bold mb-3">01 // PHISHING AMBUSH</div>
+          <h4 class="font-display font-bold text-white text-base mb-2">Verify Sender Headers First</h4>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Australian banks (CBA, ANZ, Westpac) and myGov will never text you links asking for your master code. Always inspect the reverse IP before tapping.
+          </p>
+        </div>
+
+        <div class="bg-tactical-panel p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberViolet/50 transition-all">
+          <div class="text-tactical-cyberViolet font-mono text-xl font-bold mb-3">02 // CARD CLONING</div>
+          <h4 class="font-display font-bold text-white text-base mb-2">Deploy Disposable Virtual Vaults</h4>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Never expose your physical card number to online merchants. Leverage single-use virtual cards that self-destruct immediately after purchase.
+          </p>
+        </div>
+
+        <div class="bg-tactical-panel p-6 rounded-xl border border-tactical-border hover:border-tactical-cyberCyan/50 transition-all">
+          <div class="text-tactical-cyberCyan font-mono text-xl font-bold mb-3">03 // RANSOMWARE DEADLOCK</div>
+          <h4 class="font-display font-bold text-white text-base mb-2">Offline Air-Gapped Cold Copies</h4>
+          <p class="text-slate-400 text-xs sm:text-sm leading-relaxed">
+            Keep an encrypted external hard disk detached from your system. If an extortionist locks your OS, wipe the sector clean with Secure Shield bootable ISO.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STOREFRONT / MEMBERSHIP PLANS & INSTANT DOWNLOAD -->
+  <section id="pricing" class="py-24 relative">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-mono text-tactical-neonGreen tracking-widest uppercase bg-tactical-neonGreen/10 px-3 py-1 rounded border border-tactical-neonGreen/30">
+          LIFETIME & SUBSCRIPTION TIERS
+        </span>
+        <h2 class="text-3xl sm:text-5xl font-display font-black text-white mt-3 uppercase tracking-tight">
+          SECURE YOUR LICENSE & <span class="text-tactical-neonGreen">INSTANT DOWNLOAD</span>
+        </h2>
+        <p class="text-slate-400 text-sm sm:text-base mt-2">
+          Select your level of protection. Complete instant checkout, receive your cryptographically signed license, and download the tactical installer immediately.
+        </p>
+      </div>
+
+      <!-- Pricing Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+        <!-- Tier 1: Street Scout -->
+        <div class="chamfer-card bg-tactical-card p-8 rounded-2xl border border-tactical-border flex flex-col justify-between hover:border-slate-600 transition-all">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="font-mono text-xs text-slate-400 uppercase tracking-widest">TIER 01 // OPERATIVE</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-slate-800 text-slate-300">1 PC DEVICE</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl text-white mb-2 uppercase">STREET SCOUT</h3>
+            <div class="flex items-baseline space-x-1 my-4">
+              <span class="text-4xl font-display font-black text-white">$29</span>
+              <span class="text-xs font-mono text-slate-400">/ YEAR AUD</span>
+            </div>
+            <p class="text-slate-400 text-xs mb-6">Essential anti-virus firewall and daily malware defense for individual machines.</p>
+            
+            <ul class="space-y-3 font-mono text-xs text-slate-300 mb-8 border-t border-tactical-border/70 pt-6">
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> PC Deep Malware Scan</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Hard Disk Health Check</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Basic Phishing Radar</li>
+              <li class="flex items-center text-slate-600"><i data-lucide="x" class="w-4 h-4 mr-2 shrink-0"></i> Aussie Breaches Telemetry</li>
+              <li class="flex items-center text-slate-600"><i data-lucide="x" class="w-4 h-4 mr-2 shrink-0"></i> Card Fraud Radar</li>
+            </ul>
+          </div>
+          <button onclick="openCheckoutModal('Street Scout Plan', 29)" class="w-full py-3 chamfer-btn bg-tactical-panel hover:bg-tactical-surface text-white border border-tactical-border hover:border-tactical-neonGreen font-display font-bold text-xs uppercase tracking-wider transition-all">
+            DEPLOY SCOUT
+          </button>
+        </div>
+
+        <!-- Tier 2: Syndicate Pro (Featured) -->
+        <div class="chamfer-card bg-gradient-to-b from-tactical-panel to-tactical-black p-8 rounded-2xl border-2 border-tactical-neonGreen flex flex-col justify-between shadow-neon-green relative transform lg:-translate-y-4">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 bg-tactical-neonGreen text-black font-display font-extrabold text-[10px] tracking-widest px-4 py-1 rounded-full uppercase shadow">
+            MOST POPULAR // FULL ARSENAL
+          </div>
+          <div>
+            <div class="flex justify-between items-center mb-4 pt-2">
+              <span class="font-mono text-xs text-tactical-neonGreen uppercase tracking-widest">TIER 02 // ENFORCER</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-tactical-neonGreen/20 text-tactical-neonGreen border border-tactical-neonGreen/40">5 DEVICES</span>
+            </div>
+            <h3 class="font-display font-bold text-3xl text-white mb-2 uppercase">SYNDICATE PRO</h3>
+            <div class="flex items-baseline space-x-1 my-4">
+              <span class="text-5xl font-display font-black text-white">$69</span>
+              <span class="text-xs font-mono text-slate-400">/ YEAR AUD</span>
+            </div>
+            <p class="text-slate-300 text-xs mb-6">Complete tactical package. Zero compromises, full Australian breach intelligence, and live Card Fraud Radar.</p>
+            
+            <ul class="space-y-3 font-mono text-xs text-slate-200 mb-8 border-t border-tactical-border/70 pt-6">
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Complete Deep Malware + PC Optimizer</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Aussie Breaches Real-time Tracker</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Card Fraud Radar & Skim Stopper</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> Password Lab 256-Bit Vault</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-neonGreen mr-2 shrink-0"></i> 24/7 Shield AI Tactical Advisor</li>
+            </ul>
+          </div>
+          <button onclick="openCheckoutModal('Syndicate Pro Plan', 69)" class="w-full py-4 chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-black text-sm uppercase tracking-wider transition-all shadow-neon-green">
+            LOCK IN SYNDICATE PRO
+          </button>
+        </div>
+
+        <!-- Tier 3: Impervious Enterprise -->
+        <div class="chamfer-card bg-tactical-card p-8 rounded-2xl border border-tactical-border flex flex-col justify-between hover:border-tactical-cyberViolet/60 transition-all">
+          <div>
+            <div class="flex justify-between items-center mb-4">
+              <span class="font-mono text-xs text-tactical-cyberViolet uppercase tracking-widest">TIER 03 // CARTEL</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-tactical-cyberViolet/20 text-tactical-cyberViolet border border-tactical-cyberViolet/40">UNLIMITED</span>
+            </div>
+            <h3 class="font-display font-bold text-2xl text-white mb-2 uppercase">IMPERVIOUS</h3>
+            <div class="flex items-baseline space-x-1 my-4">
+              <span class="text-4xl font-display font-black text-white">$149</span>
+              <span class="text-xs font-mono text-slate-400">LIFETIME ACCESS</span>
+            </div>
+            <p class="text-slate-400 text-xs mb-6">Commercial grade cyber fortress for agencies, high-value operators, and multi-rig setups.</p>
+            
+            <ul class="space-y-3 font-mono text-xs text-slate-300 mb-8 border-t border-tactical-border/70 pt-6">
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-cyberViolet mr-2 shrink-0"></i> Everything in Syndicate Pro</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-cyberViolet mr-2 shrink-0"></i> Unlimited Rig & Mobile Licenses</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-cyberViolet mr-2 shrink-0"></i> Dedicated SOC Priority Incident Channel</li>
+              <li class="flex items-center"><i data-lucide="check" class="w-4 h-4 text-tactical-cyberViolet mr-2 shrink-0"></i> Lifetime Signature Updates</li>
+            </ul>
+          </div>
+          <button onclick="openCheckoutModal('Impervious Lifetime Enterprise', 149)" class="w-full py-3 chamfer-btn bg-tactical-panel hover:bg-tactical-surface text-tactical-cyberViolet border border-tactical-cyberViolet/40 hover:border-tactical-cyberViolet font-display font-bold text-xs uppercase tracking-wider transition-all">
+            COMMISSION CARTEL
+          </button>
+        </div>
+
+      </div>
+
+      <!-- MERCHANT PRODUCT BUILD / BINARY REPOSITORY (OWNER UPLOAD & INSTANT CLIENT ACCESS) -->
+      <div class="mt-16 bg-tactical-panel border border-tactical-border rounded-xl p-6 sm:p-8">
+        <div class="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-6 pb-6 border-b border-tactical-border/70">
+          <div>
+            <div class="flex items-center space-x-2">
+              <i data-lucide="terminal" class="w-4 h-4 text-tactical-neonGreen"></i>
+              <span class="font-mono text-xs text-tactical-neonGreen uppercase tracking-widest font-bold">MERCHANT ARTIFACT DISPATCH & DEPLOYMENT HUB</span>
+            </div>
+            <h3 class="font-display font-bold text-xl text-white mt-1">PRODUCT INSTALLER DROPZONE & BUILD REPOSITORY</h3>
+            <p class="text-xs text-slate-400 mt-1">As the brand owner, drop your latest compiled installer (<code class="text-tactical-neonGreen">.exe</code>, <code class="text-tactical-neonGreen">.dmg</code>, or <code class="text-tactical-neonGreen">.deb</code>) below. Customers automatically receive immediate cryptographically signed downloads upon purchase.</p>
+          </div>
+          <div class="bg-tactical-black px-4 py-2 rounded border border-tactical-border font-mono text-xs text-slate-400 shrink-0">
+            ACTIVE REPO: <span class="text-tactical-neonGreen font-bold" id="currentRepoVersion">SecureShield_v9.42_Titan.exe</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6 items-center">
+          <!-- Dropzone -->
+          <div 
+            id="dropZoneArea" 
+            ondragover="handleDragOver(event)" 
+            ondragleave="handleDragLeave(event)" 
+            ondrop="handleFileDrop(event)"
+            class="border-2 border-dashed border-tactical-border hover:border-tactical-neonGreen/80 rounded-xl p-8 text-center bg-tactical-black/60 transition-colors cursor-pointer"
+            onclick="document.getElementById('hiddenFileInput').click()">
+            <input type="file" id="hiddenFileInput" class="hidden" onchange="handleFileSelect(event)" accept=".exe,.msi,.zip,.dmg,.pkg,.deb" />
+            <div class="flex flex-col items-center justify-center space-y-2">
+              <div class="w-12 h-12 rounded-full bg-tactical-card flex items-center justify-center text-tactical-neonGreen border border-tactical-border">
+                <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+              </div>
+              <span class="font-display font-bold text-sm text-white uppercase">UPLOAD / STAGE NEW ANTIVIRUS BUILD</span>
+              <p class="text-xs font-mono text-slate-500">Drag & drop your client software (.exe / .zip / .dmg) or click to browse</p>
+            </div>
+          </div>
+
+          <!-- Build Info & Direct Mock Client Download -->
+          <div class="space-y-4 font-mono text-xs bg-tactical-black/40 p-5 rounded-xl border border-tactical-border">
+            <div class="flex justify-between pb-2 border-b border-tactical-border/50">
+              <span class="text-slate-400">SHA-256 Checksum:</span>
+              <span class="text-slate-200 font-mono text-[10px] truncate max-w-[200px]" id="repoChecksum">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+            </div>
+            <div class="flex justify-between pb-2 border-b border-tactical-border/50">
+              <span class="text-slate-400">Package Architecture:</span>
+              <span class="text-tactical-cyberCyan">x64 / ARM64 Hybrid Signed</span>
+            </div>
+            <div class="flex justify-between pb-2 border-b border-tactical-border/50">
+              <span class="text-slate-400">Staged Build Size:</span>
+              <span class="text-slate-300" id="repoFileSize">64.8 MB (Optimized)</span>
+            </div>
+            
+            <div class="pt-2 flex items-center justify-between">
+              <span class="text-slate-400">Direct Test Download:</span>
+              <button onclick="simulateDirectClientDownload()" class="px-4 py-2 rounded bg-tactical-panel hover:bg-tactical-border text-tactical-neonGreen border border-tactical-neonGreen/40 font-mono text-xs flex items-center space-x-1.5 transition-all">
+                <i data-lucide="download" class="w-3.5 h-3.5"></i>
+                <span>GET TRIAL DEMO EXE</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CHECKOUT & INSTANT DOWNLOAD MODAL -->
+  <div id="checkoutModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="chamfer-card bg-tactical-panel border-2 border-tactical-neonGreen max-w-lg w-full p-6 sm:p-8 rounded-2xl shadow-neon-green relative">
+      <!-- Close Button -->
+      <button onclick="closeCheckoutModal()" class="absolute top-4 right-4 text-slate-400 hover:text-tactical-danger transition-colors">
+        <i data-lucide="x" class="w-6 h-6"></i>
+      </button>
+
+      <!-- Step 1: Payment Details -->
+      <div id="checkoutStepPayment">
+        <div class="flex items-center space-x-2 mb-1">
+          <span class="w-2 h-2 rounded-full bg-tactical-neonGreen animate-ping"></span>
+          <span class="font-mono text-xs text-tactical-neonGreen tracking-wider uppercase font-bold">TACTICAL SECURE TRANSACTION</span>
+        </div>
+        <h3 class="font-display font-black text-2xl text-white uppercase" id="modalPlanTitle">SECURE SHIELD PRO</h3>
+        <p class="font-mono text-sm text-slate-400 mb-6" id="modalPlanPrice">Total: $69.00 AUD (Includes Lifetime Vault Key)</p>
+
+        <!-- Payment Tabs -->
+        <div class="grid grid-cols-3 gap-2 mb-6 font-mono text-xs">
+          <button type="button" onclick="selectPayMethod('card')" id="tabCard" class="py-2.5 px-3 rounded border border-tactical-neonGreen bg-tactical-neonGreen/10 text-tactical-neonGreen font-bold flex items-center justify-center space-x-1">
+            <i data-lucide="credit-card" class="w-4 h-4"></i>
+            <span>CARD</span>
+          </button>
+          <button type="button" onclick="selectPayMethod('crypto')" id="tabCrypto" class="py-2.5 px-3 rounded border border-tactical-border bg-tactical-black text-slate-400 font-bold flex items-center justify-center space-x-1 hover:border-slate-600">
+            <i data-lucide="bitcoin" class="w-4 h-4"></i>
+            <span>CRYPTO</span>
+          </button>
+          <button type="button" onclick="selectPayMethod('wallet')" id="tabWallet" class="py-2.5 px-3 rounded border border-tactical-border bg-tactical-black text-slate-400 font-bold flex items-center justify-center space-x-1 hover:border-slate-600">
+            <i data-lucide="smartphone" class="w-4 h-4"></i>
+            <span>APPLE / GPAY</span>
+          </button>
+        </div>
+
+        <!-- Form fields -->
+        <form onsubmit="executeCheckout(event)" class="space-y-4 font-mono text-xs">
+          <div>
+            <label class="block text-slate-400 mb-1">DISPATCH EMAIL (LICENSE & VAULT CODES)</label>
+            <input required type="email" id="buyerEmail" placeholder="operator@proton.me" class="w-full px-3.5 py-2.5 rounded bg-tactical-black border border-tactical-border text-white focus:outline-none focus:border-tactical-neonGreen" />
+          </div>
+
+          <div id="cardFields" class="space-y-3">
+            <div>
+              <label class="block text-slate-400 mb-1">CARD NUMBER</label>
+              <input type="text" placeholder="•••• •••• •••• 4092" maxlength="19" class="w-full px-3.5 py-2.5 rounded bg-tactical-black border border-tactical-border text-white focus:outline-none focus:border-tactical-neonGreen" />
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-slate-400 mb-1">EXPIRY (MM/YY)</label>
+                <input type="text" placeholder="12/28" maxlength="5" class="w-full px-3.5 py-2.5 rounded bg-tactical-black border border-tactical-border text-white focus:outline-none focus:border-tactical-neonGreen" />
+              </div>
+              <div>
+                <label class="block text-slate-400 mb-1">CVC / CVP</label>
+                <input type="text" placeholder="888" maxlength="4" class="w-full px-3.5 py-2.5 rounded bg-tactical-black border border-tactical-border text-white focus:outline-none focus:border-tactical-neonGreen" />
+              </div>
+            </div>
+          </div>
+
+          <div id="cryptoFields" class="hidden p-4 rounded bg-tactical-black border border-tactical-border space-y-2">
+            <div class="flex justify-between items-center text-slate-400">
+              <span>Send BTC / XMR / USDT to Escrow:</span>
+              <span class="text-tactical-neonGreen font-bold">0% FEE</span>
+            </div>
+            <div class="bg-tactical-panel p-2 rounded text-[10px] text-slate-300 break-all select-all font-mono">
+              0x89205A3A3b2A5532C034eA20A209FF7677491d9B
+            </div>
+          </div>
+
+          <div id="walletFields" class="hidden p-4 rounded bg-tactical-black border border-tactical-border text-center text-slate-300">
+            <p>1-Click Apple Pay & Google Wallet Express enabled upon trigger.</p>
+          </div>
+
+          <div class="pt-3">
+            <button type="submit" id="paySubmitBtn" class="w-full py-3.5 chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-black text-sm uppercase tracking-wider transition-all shadow-neon-green flex items-center justify-center space-x-2">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+              <span id="paySubmitBtnText">AUTHORIZE PAYMENT & UNLOCK DOWNLOAD</span>
+            </button>
+          </div>
+          <p class="text-[10px] text-slate-500 text-center flex items-center justify-center space-x-1">
+            <i data-lucide="lock" class="w-3 h-3 text-tactical-neonGreen"></i>
+            <span>256-Bit Tactical Quantum SSL Vault Checkout</span>
+          </p>
+        </form>
+      </div>
+
+      <!-- Step 2: Immediate Delivery & License Dispatch (Shown after payment) -->
+      <div id="checkoutStepSuccess" class="hidden text-center space-y-5">
+        <div class="w-16 h-16 rounded-full bg-tactical-neonGreen/20 text-tactical-neonGreen border-2 border-tactical-neonGreen flex items-center justify-center mx-auto shadow-neon-green animate-bounce">
+          <i data-lucide="check-check" class="w-8 h-8"></i>
+        </div>
+
+        <div>
+          <span class="text-xs font-mono text-tactical-neonGreen tracking-widest uppercase font-bold">ORDER VERIFIED & CLEARED</span>
+          <h3 class="font-display font-black text-2xl text-white mt-1 uppercase">ARMAMENT DEPLOYED</h3>
+          <p class="text-xs text-slate-400 mt-1">Receipt & offline emergency rescue key dispatched to your inbox.</p>
+        </div>
+
+        <!-- License Display Box -->
+        <div class="bg-tactical-black p-4 rounded-xl border border-tactical-border font-mono text-left space-y-2">
+          <div class="flex justify-between items-center text-[10px] text-slate-500">
+            <span>OFFICIAL LICENSE ACTIVATION KEY:</span>
+            <span class="text-tactical-neonGreen font-bold">ACTIVE</span>
+          </div>
+          <div class="flex items-center justify-between bg-tactical-panel p-2 rounded border border-tactical-border/70">
+            <span id="generatedLicenseKey" class="text-xs font-bold text-tactical-neonGreen select-all tracking-wider">SEC-SHIELD-9942-X7R9-TITAN-GANG</span>
+            <button onclick="copyGeneratedLicense()" class="text-slate-400 hover:text-white" title="Copy Key">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+            </button>
+          </div>
+          <span class="text-[10px] text-slate-500 block">Valid on: Windows 10/11, macOS, Linux, Android</span>
+        </div>
+
+        <!-- Direct Instant Download Button -->
+        <div class="space-y-2 pt-2">
+          <button onclick="downloadClientInstaller()" class="w-full py-4 chamfer-btn bg-tactical-neonGreen hover:bg-emerald-400 text-tactical-black font-display font-black text-sm uppercase tracking-wider transition-all shadow-neon-green flex items-center justify-center space-x-2">
+            <i data-lucide="download" class="w-5 h-5"></i>
+            <span>INSTANT DOWNLOAD SECURE SHIELD (.EXE / .PKG)</span>
+          </button>
+          <p class="text-[11px] font-mono text-slate-400">Version 9.42 Titan (SHA-256 Verified Binary)</p>
+        </div>
+
+        <button onclick="closeCheckoutModal()" class="text-xs font-mono text-slate-500 hover:text-slate-300">
+          Close Window & Return to Console
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SHIELD AI ADVISOR DRAWER / CHATBOT MODAL -->
+  <div id="aiAdvisorModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden flex items-center justify-end">
+    <div class="bg-tactical-surface border-l-2 border-tactical-cyberViolet w-full max-w-md h-full flex flex-col justify-between shadow-2xl p-6 overflow-hidden">
+      <!-- AI Header -->
+      <div class="flex items-center justify-between pb-4 border-b border-tactical-border">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-lg bg-tactical-cyberViolet/20 border border-tactical-cyberViolet/40 flex items-center justify-center text-tactical-cyberViolet shadow-neon-violet">
+            <i data-lucide="bot" class="w-6 h-6"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-1.5">
+              <h3 class="font-display font-bold text-white text-base">SHIELD AI ADVISOR</h3>
+              <span class="w-2 h-2 rounded-full bg-tactical-cyberViolet animate-ping"></span>
+            </div>
+            <p class="font-mono text-[10px] text-slate-400">Cyber Enforcer & Incident Response</p>
+          </div>
+        </div>
+        <button onclick="closeAiAdvisor()" class="text-slate-400 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+
+      <!-- Quick Prompt Pills -->
+      <div class="py-3 flex flex-wrap gap-1.5 font-mono text-[10px] border-b border-tactical-border/60">
+        <button onclick="sendQuickAiQuery('Is my PC infected if my fan is spinning at 100%?')" class="bg-tactical-panel px-2.5 py-1 rounded text-slate-300 hover:text-tactical-neonGreen border border-tactical-border">
+          High CPU / Fan at 100%?
+        </button>
+        <button onclick="sendQuickAiQuery('How do I spot an Australian scam SMS from Linkt or Australia Post?')" class="bg-tactical-panel px-2.5 py-1 rounded text-slate-300 hover:text-tactical-neonGreen border border-tactical-border">
+          Fake AusPost / Linkt SMS?
+        </button>
+        <button onclick="sendQuickAiQuery('What should I do if my credit card was skimmed?')" class="bg-tactical-panel px-2.5 py-1 rounded text-slate-300 hover:text-tactical-neonGreen border border-tactical-border">
+          Card Skimmed Protocol?
+        </button>
+      </div>
+
+      <!-- Chat History -->
+      <div id="aiChatHistory" class="flex-1 overflow-y-auto py-4 space-y-4 font-mono text-xs text-slate-300 pr-1">
+        <div class="bg-tactical-panel p-3.5 rounded-lg border border-tactical-border/70 space-y-1">
+          <span class="text-tactical-cyberViolet font-bold text-[10px] block">SHIELD AI // TAC-ADVISOR</span>
+          <p>Operative, I am Secure Shield’s autonomous defense intelligence. Ask me anything regarding malware detection, Australian breach forensics, or hard drive lockdowns.</p>
+        </div>
+      </div>
+
+      <!-- Chat Input -->
+      <form onsubmit="handleAiUserSubmit(event)" class="pt-3 border-t border-tactical-border flex gap-2">
+        <input 
+          id="aiUserInput" 
+          type="text" 
+          placeholder="Ask tactical question..." 
+          class="flex-1 bg-tactical-black px-3.5 py-2.5 rounded border border-tactical-border text-white text-xs font-mono focus:outline-none focus:border-tactical-cyberViolet"
+        />
+        <button type="submit" class="bg-tactical-cyberViolet hover:bg-purple-600 text-white font-mono px-4 py-2.5 rounded text-xs transition-colors flex items-center justify-center">
+          <i data-lucide="send" class="w-4 h-4"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- NOTIFICATION TOAST -->
+  <div id="tacticalToast" class="fixed bottom-6 right-6 z-50 hidden bg-tactical-card border-2 border-tactical-neonGreen text-white px-5 py-3 rounded-xl shadow-neon-green font-mono text-xs flex items-center space-x-3">
+    <i data-lucide="bell" class="w-4 h-4 text-tactical-neonGreen"></i>
+    <span id="toastMessage">System Notification</span>
+  </div>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-tactical-border bg-tactical-black py-12 font-mono text-xs text-slate-500">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="flex items-center space-x-3">
+          <div class="w-7 h-7 rounded bg-tactical-neonGreen/20 border border-tactical-neonGreen/40 flex items-center justify-center text-tactical-neonGreen">
+            <i data-lucide="shield" class="w-4 h-4"></i>
+          </div>
+          <span class="font-display font-black text-sm text-white tracking-wider">SECURE SHIELD SYSTEM</span>
+          <span class="text-slate-600">|</span>
+          <span class="text-slate-400">All rights reserved. Gangster Grade Cybersecurity Suite.</span>
+        </div>
+
+        <div class="flex items-center space-x-6 text-slate-400">
+          <a href="#matrix" class="hover:text-tactical-neonGreen transition-colors">Features</a>
+          <a href="#aussie-radar" class="hover:text-tactical-neonGreen transition-colors">Aussie Radar</a>
+          <a href="#password-lab" class="hover:text-tactical-neonGreen transition-colors">Password Lab</a>
+          <a href="#pricing" class="hover:text-tactical-neonGreen transition-colors">Buy & Download</a>
+        </div>
+      </div>
+      <div class="mt-8 pt-6 border-t border-tactical-border/40 text-[11px] text-slate-600 flex flex-col sm:flex-row justify-between gap-2">
+        <span>AUSTRALIAN REGIONAL DEFENSE // SYDNEY & MELBOURNE THREAT TELEMETRY NODES ACTIVE</span>
+        <span>SHA-256 SIGNED BINARIES // MIL-SPEC 256-BIT ENCRYPTION</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // ==========================================
+    // AUDIO SYNTHESIS SOUND EFFECTS (Tone.js free native Web Audio)
+    // ==========================================
+    let audioContext = null;
+    let audioMuted = false;
+
+    function getAudioContext() {
+      if (!audioContext) {
+        audioContext = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      return audioContext;
+    }
+
+    function playBeep(frequency = 600, duration = 0.08, type = 'sine') {
+      if (audioMuted) return;
+      try {
+        const ctx = getAudioContext();
+        if (ctx.state === 'suspended') ctx.resume();
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(frequency, ctx.currentTime);
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + duration);
+      } catch (e) {
+        // audio might be blocked before first user touch
+      }
+    }
+
+    function toggleScanAudio() {
+      audioMuted = !audioMuted;
+      const btn = document.getElementById('toggleAudioBtn');
+      if (audioMuted) {
+        btn.innerHTML = '<i data-lucide="volume-x" class="w-4 h-4 text-tactical-danger"></i>';
+        showToast("Scanner Audio Muted");
+      } else {
+        btn.innerHTML = '<i data-lucide="volume-2" class="w-4 h-4 text-tactical-neonGreen"></i>';
+        showToast("Scanner Tactical Audio Enabled");
+        playBeep(880, 0.1);
+      }
+      lucide.createIcons();
+    }
+
+    // ==========================================
+    // NOTIFICATION TOAST
+    // ==========================================
+    let toastTimeout = null;
+    function showToast(msg) {
+      const toast = document.getElementById('tacticalToast');
+      const label = document.getElementById('toastMessage');
+      label.textContent = msg;
+      toast.classList.remove('hidden');
+      if (toastTimeout) clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => {
+        toast.classList.add('hidden');
+      }, 3500);
+    }
+
+    // ==========================================
+    // LIVE TICKER LOOP
+    // ==========================================
+    const tickerMessages = [
+      "[THREAT RADAR] Blocked 14,920 Aussie banking credential injections | Phishing cluster detected in Sydney Node #4 | Ransomware payload neutralized (LockBit 4.0 clone)",
+      "[ALERT] 3,421 Fake 'Linkt Toll' SMS domains taken down in Victoria & NSW | Hard Disk Sector Guard active",
+      "[SYNDICATE INTEL] Zero-day Telegram infostealer bot blocked | 256-bit password entropy scanner online",
+      "[AUSTRALIA RADAR] Medibank & Optus secondary credential stuffing attempts neutralized at gateway"
+    ];
+    let tickerIdx = 0;
+    setInterval(() => {
+      tickerIdx = (tickerIdx + 1) % tickerMessages.length;
+      const ticker = document.getElementById('liveTickerText');
+      if (ticker) {
+        ticker.style.opacity = '0';
+        setTimeout(() => {
+          ticker.textContent = tickerMessages[tickerIdx];
+          ticker.style.opacity = '1';
+        }, 300);
+      }
+    }, 7000);
+
+    // ==========================================
+    // INTERACTIVE SYSTEM SCANNER DEMO
+    // ==========================================
+    let isScanning = false;
+    let scanInterval = null;
+
+    function scrollToScanner() {
+      const el = document.getElementById('scanner-demo');
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    const mockScanFiles = [
+      { path: 'C:\\Windows\\System32\\ntoskrnl.exe', status: 'CLEAN' },
+      { path: 'C:\\Windows\\System32\\drivers\\etc\\hosts', status: 'VERIFIED' },
+      { path: 'AppData\\Local\\Temp\\setup_miner_x86.tmp', status: 'THREAT: Trojan.Win64.Miner.Gen' },
+      { path: 'C:\\Users\\User\\Downloads\\invoice_tax_au_2026.pdf.exe', status: 'THREAT: Spyware.PhishPayload' },
+      { path: 'System Volume Information\\tracking.log', status: 'CLEAN' },
+      { path: 'Hard Disk 0 Sector 0 [MBR Signature]', status: 'SECURE' },
+      { path: 'Kernel Memory Page Pool Dump [0x7FFC0]', status: 'INTACT' },
+      { path: 'Browser Cache: Australian Commonwealth Bank Clone Cookie', status: 'ISOLATED' },
+      { path: 'C:\\Windows\\System32\\svchost.exe', status: 'INTEGRITY OK' }
+    ];
+
+    function startSystemScan(mode = 'deep') {
+      if (isScanning) return;
+      isScanning = true;
+
+      const consoleBox = document.getElementById('scannerConsoleLog');
+      const startBtn = document.getElementById('startScanBtn');
+      const progressBar = document.getElementById('scanProgressBar');
+      const progressLabel = document.getElementById('progressLabel');
+      const progressPct = document.getElementById('progressPercentage');
+      const statusBadge = document.getElementById('scanStatusBadge');
+      const objectCount = document.getElementById('scanObjectCount');
+      const threatsFound = document.getElementById('threatsFoundCount');
+      const quarantineBtn = document.getElementById('quarantineBtn');
+
+      quarantineBtn.classList.add('hidden');
+      threatsFound.textContent = '0 QUARANTINED';
+      threatsFound.className = 'text-tactical-cyberCyan font-bold text-sm';
+
+      statusBadge.textContent = 'SCANNING // HEURISTIC ENGINE';
+      statusBadge.className = 'px-2 py-0.5 rounded bg-tactical-neonGreen/20 text-tactical-neonGreen border border-tactical-neonGreen/50 font-bold animate-pulse';
+
+      consoleBox.innerHTML = '';
+      addLogEntry(`> Initializing Secure Shield Kernel Engine (${mode.toUpperCase()} MODE)...`, 'text-tactical-neonGreen');
+      playBeep(440, 0.1, 'square');
+
+      let progress = 0;
+      let totalObjects = 0;
+      let threatsCount = 0;
+
+      startBtn.disabled = true;
+      startBtn.classList.add('opacity-50', 'cursor-not-allowed');
+
+      scanInterval = setInterval(() => {
+        progress += Math.floor(Math.random() * 8) + 4;
+        totalObjects += Math.floor(Math.random() * 2400) + 1200;
+
+        if (progress > 100) progress = 100;
+
+        progressBar.style.width = `${progress}%`;
+        progressPct.textContent = `${progress}%`;
+        objectCount.textContent = `${totalObjects.toLocaleString()} / 48,290`;
+
+        // Randomly pick a file to log
+        const sample = mockScanFiles[Math.floor(Math.random() * mockScanFiles.length)];
+        document.getElementById('scanTargetText').textContent = sample.path;
+
+        if (sample.status.startsWith('THREAT') && threatsCount < 2) {
+          threatsCount++;
+          addLogEntry(`[ALERT!] DETECTED: ${sample.path} -> ${sample.status}`, 'text-tactical-danger font-bold');
+          threatsFound.textContent = `${threatsCount} DETECTED`;
+          threatsFound.className = 'text-tactical-danger font-bold text-sm animate-pulse';
+          playBeep(220, 0.2, 'sawtooth');
+        } else {
+          addLogEntry(`Inspecting: ${sample.path} ... [${sample.status}]`, 'text-slate-400');
+          playBeep(700 + Math.random() * 200, 0.04, 'sine');
+        }
+
+        if (progress >= 100) {
+          clearInterval(scanInterval);
+          isScanning = false;
+          startBtn.disabled = false;
+          startBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+
+          progressLabel.textContent = 'SCAN COMPLETED. THREATS ISOLATED IN MEMORY VAULT.';
+          statusBadge.textContent = 'ACTION REQUIRED';
+          statusBadge.className = 'px-2 py-0.5 rounded bg-tactical-danger/20 text-tactical-danger border border-tactical-danger/50 font-bold';
+
+          addLogEntry(`> SCAN CONCLUDED: 48,290 files evaluated. ${threatsCount} active high-threat vectors quarantined.`, 'text-tactical-neonGreen font-bold');
+          quarantineBtn.classList.remove('hidden');
+          playBeep(880, 0.3, 'sine');
+        }
+      }, 250);
+    }
+
+    function addLogEntry(text, classes = '') {
+      const consoleBox = document.getElementById('scannerConsoleLog');
+      const div = document.createElement('div');
+      div.className = classes;
+      div.textContent = text;
+      consoleBox.appendChild(div);
+      consoleBox.scrollTop = consoleBox.scrollHeight;
+    }
+
+    function cleanQuarantinedThreats() {
+      const quarantineBtn = document.getElementById('quarantineBtn');
+      const threatsFound = document.getElementById('threatsFoundCount');
+      const statusBadge = document.getElementById('scanStatusBadge');
+
+      addLogEntry('> EXECUTING MIL-SPEC ZERO-OVERWRITE PURGE...', 'text-tactical-cyberViolet font-bold');
+      playBeep(520, 0.2, 'square');
+
+      setTimeout(() => {
+        addLogEntry('> SUCCESS: 2 threats completely neutralized and shredded. Quarantine clean.', 'text-tactical-neonGreen font-bold');
+        threatsFound.textContent = '0 QUARANTINED (PURGED)';
+        threatsFound.className = 'text-emerald-400 font-bold text-sm';
+        quarantineBtn.classList.add('hidden');
+        statusBadge.textContent = 'SYSTEM 100% FORTIFIED';
+        statusBadge.className = 'px-2 py-0.5 rounded bg-tactical-neonGreen/20 text-tactical-neonGreen border border-tactical-neonGreen/50 font-bold';
+        showToast("Threats Permanently Shredded & Eradicated");
+      }, 600);
+    }
+
+    // ==========================================
+    // AUSSIE BREACHES RADAR LOOKUP
+    // ==========================================
+    function fillAndCheckBreach(val) {
+      document.getElementById('aussieSearchInput').value = val;
+      executeAussieBreachLookup();
+    }
+
+    function executeAussieBreachLookup() {
+      const input = document.getElementById('aussieSearchInput').value.trim();
+      const resultBox = document.getElementById('aussieResultBox');
+
+      if (!input) {
+        showToast("Please enter an email or phone number to check.");
+        return;
+      }
+
+      playBeep(500, 0.1);
+      resultBox.classList.remove('hidden');
+      resultBox.innerHTML = `
+        <div class="flex items-center space-x-2 text-tactical-neonGreen">
+          <span class="w-3 h-3 rounded-full bg-tactical-neonGreen animate-ping"></span>
+          <span>Querying Australian Telemetry Database (Optus, Medibank, Latitude, Canva)...</span>
+        </div>
+      `;
+
+      setTimeout(() => {
+        const isCompromised = input.toLowerCase().includes('victim') || input.includes('400') || input.includes('mate@');
+        if (isCompromised) {
+          resultBox.className = 'mt-8 p-5 rounded-xl border border-tactical-danger bg-tactical-danger/10 font-mono text-xs space-y-3';
+          resultBox.innerHTML = `
+            <div class="flex items-center justify-between">
+              <span class="text-tactical-danger font-bold text-sm uppercase flex items-center">
+                <i data-lucide="alert-octagon" class="w-5 h-5 mr-2"></i>
+                BREACH RECORD FOUND: HIGH EXPOSURE LEVEL
+              </span>
+              <span class="px-2 py-0.5 rounded bg-tactical-danger text-white text-[10px] font-bold">3 INCIDENTS</span>
+            </div>
+            <p class="text-slate-300">Target identity <strong>${input}</strong> was found across 3 historical dark web paste dumps:</p>
+            <ul class="list-disc list-inside text-slate-400 space-y-1">
+              <li><strong class="text-white">Aus Telco Leak (2022):</strong> Exposed Drivers License #, Full Name, Mobile</li>
+              <li><strong class="text-white">Health Insurer Dump:</strong> Medicare Number & Address details</li>
+              <li><strong class="text-white">Finance Portal Spill:</strong> Hashed passwords & billing records</li>
+            </ul>
+            <div class="pt-2 flex items-center justify-between border-t border-tactical-danger/30">
+              <span class="text-tactical-danger">RECOMMENDATION: Deploy Secure Shield Syndicate Pro Lockdown</span>
+              <a href="#pricing" class="px-3 py-1.5 rounded bg-tactical-danger text-white font-bold hover:bg-rose-600 transition-colors">ARM DEFENSE</a>
+            </div>
+          `;
+          playBeep(240, 0.3, 'sawtooth');
+        } else {
+          resultBox.className = 'mt-8 p-5 rounded-xl border border-tactical-neonGreen bg-tactical-neonGreen/10 font-mono text-xs space-y-2';
+          resultBox.innerHTML = `
+            <div class="flex items-center space-x-2 text-tactical-neonGreen font-bold text-sm uppercase">
+              <i data-lucide="shield-check" class="w-5 h-5"></i>
+              <span>NO BREACH FOUND // CLEAN RECORD</span>
+            </div>
+            <p class="text-slate-300">Identifier <strong>${input}</strong> has 0 matches across known Australian or international leaks.</p>
+            <p class="text-slate-400 text-[11px]">Keep your guard active with our continuous email monitoring radar.</p>
+          `;
+          playBeep(880, 0.15, 'sine');
+        }
+        lucide.createIcons();
+      }, 700);
+    }
+
+    // ==========================================
+    // PASSWORD LAB INTERACTIVE ENTROPY ANALYZER
+    // ==========================================
+    function analyzePasswordStrength() {
+      const pwd = document.getElementById('passwordInput').value;
+      const meter = document.getElementById('passwordMeterBar');
+      const crackTime = document.getElementById('passwordCrackTime');
+      const ratingText = document.getElementById('passwordRatingText');
+      const entropyLabel = document.getElementById('entropyBits');
+
+      const checkLen = document.getElementById('checkLen');
+      const checkNum = document.getElementById('checkNum');
+      const checkUpper = document.getElementById('checkUpper');
+      const checkSym = document.getElementById('checkSym');
+
+      const hasLen = pwd.length >= 12;
+      const hasNum = /\d/.test(pwd);
+      const hasUpper = /[A-Z]/.test(pwd);
+      const hasSym = /[^A-Za-z0-9]/.test(pwd);
+
+      updateCheckPill(checkLen, hasLen);
+      updateCheckPill(checkNum, hasNum);
+      updateCheckPill(checkUpper, hasUpper);
+      updateCheckPill(checkSym, hasSym);
+
+      let poolSize = 0;
+      if (/[a-z]/.test(pwd)) poolSize += 26;
+      if (hasUpper) poolSize += 26;
+      if (hasNum) poolSize += 10;
+      if (hasSym) poolSize += 33;
+
+      const entropy = pwd.length > 0 && poolSize > 0 ? Math.floor(pwd.length * Math.log2(poolSize)) : 0;
+      entropyLabel.textContent = `${entropy} BITS ENTROPY`;
+
+      if (pwd.length === 0) {
+        meter.style.width = '0%';
+        crackTime.textContent = 'Brute-force crack time: Instant';
+        ratingText.textContent = 'NO PASSWORD INPUT';
+        ratingText.className = 'font-bold text-slate-500';
+        return;
+      }
+
+      if (entropy < 35) {
+        meter.style.width = '20%';
+        meter.className = 'h-full transition-all duration-300 bg-red-500';
+        crackTime.textContent = 'Crack time: ~0.002 seconds on RTX 4090 cluster';
+        ratingText.textContent = 'CRITICAL VULNERABILITY';
+        ratingText.className = 'font-bold text-red-500';
+      } else if (entropy < 60) {
+        meter.style.width = '55%';
+        meter.className = 'h-full transition-all duration-300 bg-tactical-warning';
+        crackTime.textContent = 'Crack time: ~3 days via dictionary brute-force';
+        ratingText.textContent = 'MODERATE // NEEDS HARDENING';
+        ratingText.className = 'font-bold text-tactical-warning';
+      } else if (entropy < 85) {
+        meter.style.width = '80%';
+        meter.className = 'h-full transition-all duration-300 bg-tactical-cyberCyan';
+        crackTime.textContent = 'Crack time: ~480 years';
+        ratingText.textContent = 'ROBUST SHIELD GRADE';
+        ratingText.className = 'font-bold text-tactical-cyberCyan';
+      } else {
+        meter.style.width = '100%';
+        meter.className = 'h-full transition-all duration-300 bg-tactical-neonGreen';
+        crackTime.textContent = 'Crack time: ~4.2 Trillion Years (Quantum Proof)';
+        ratingText.textContent = 'GANGSTER FORTRESS CIPHER';
+        ratingText.className = 'font-bold text-tactical-neonGreen';
+      }
+    }
+
+    function updateCheckPill(element, passed) {
+      if (passed) {
+        element.className = 'p-2 rounded bg-tactical-neonGreen/10 border border-tactical-neonGreen/40 text-tactical-neonGreen flex items-center space-x-1.5';
+        element.querySelector('i').setAttribute('data-lucide', 'check-circle-2');
+      } else {
+        element.className = 'p-2 rounded bg-tactical-black/40 border border-slate-800 text-slate-500 flex items-center space-x-1.5';
+        element.querySelector('i').setAttribute('data-lucide', 'circle');
+      }
+      lucide.createIcons();
+    }
+
+    function generateSuperPassword() {
+      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%^&*()_+~|}{[]:;?><";
+      let res = "";
+      for (let i = 0; i < 20; i++) {
+        res += chars.charAt(Math.floor(Math.random() * chars.length));
+      }
+      const input = document.getElementById('passwordInput');
+      input.value = res;
+      analyzePasswordStrength();
+      playBeep(900, 0.08);
+      showToast("Generated 256-bit entropy password");
+    }
+
+    // ==========================================
+    // STOREFRONT / CHECKOUT FLOW
+    // ==========================================
+    let currentChosenPlan = { name: 'Syndicate Pro Plan', price: 69 };
+
+    function openCheckoutModal(planName, price) {
+      currentChosenPlan = { name: planName, price: price };
+      document.getElementById('modalPlanTitle').textContent = planName;
+      document.getElementById('modalPlanPrice').textContent = `Total: $${price}.00 AUD // Instant Digital Delivery`;
+      document.getElementById('paySubmitBtnText').textContent = `PAY $${price}.00 AUD & UNLOCK DOWNLOAD`;
+
+      document.getElementById('checkoutStepPayment').classList.remove('hidden');
+      document.getElementById('checkoutStepSuccess').classList.add('hidden');
+      document.getElementById('checkoutModal').classList.remove('hidden');
+      playBeep(600, 0.1);
+    }
+
+    function closeCheckoutModal() {
+      document.getElementById('checkoutModal').classList.add('hidden');
+    }
+
+    function selectPayMethod(method) {
+      const cardF = document.getElementById('cardFields');
+      const cryptoF = document.getElementById('cryptoFields');
+      const walletF = document.getElementById('walletFields');
+
+      const tabC = document.getElementById('tabCard');
+      const tabCr = document.getElementById('tabCrypto');
+      const tabW = document.getElementById('tabWallet');
+
+      // Reset tabs
+      [tabC, tabCr, tabW].forEach(t => {
+        t.className = 'py-2.5 px-3 rounded border border-tactical-border bg-tactical-black text-slate-400 font-bold flex items-center justify-center space-x-1 hover:border-slate-600';
+      });
+
+      cardF.classList.add('hidden');
+      cryptoF.classList.add('hidden');
+      walletF.classList.add('hidden');
+
+      if (method === 'card') {
+        tabC.className = 'py-2.5 px-3 rounded border border-tactical-neonGreen bg-tactical-neonGreen/10 text-tactical-neonGreen font-bold flex items-center justify-center space-x-1';
+        cardF.classList.remove('hidden');
+      } else if (method === 'crypto') {
+        tabCr.className = 'py-2.5 px-3 rounded border border-tactical-neonGreen bg-tactical-neonGreen/10 text-tactical-neonGreen font-bold flex items-center justify-center space-x-1';
+        cryptoF.classList.remove('hidden');
+      } else if (method === 'wallet') {
+        tabW.className = 'py-2.5 px-3 rounded border border-tactical-neonGreen bg-tactical-neonGreen/10 text-tactical-neonGreen font-bold flex items-center justify-center space-x-1';
+        walletF.classList.remove('hidden');
+      }
+      playBeep(700, 0.05);
+    }
+
+    function executeCheckout(e) {
+      e.preventDefault();
+      const btn = document.getElementById('paySubmitBtn');
+      const btnText = document.getElementById('paySubmitBtnText');
+
+      btn.disabled = true;
+      btnText.textContent = "ENCRYPTING TRANSACTION & MINTING KEY...";
+      playBeep(450, 0.1, 'square');
+
+      setTimeout(() => {
+        // Generate a random high-tech license key
+        const randomHex = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const randomHex2 = Math.random().toString(36).substring(2, 6).toUpperCase();
+        const key = `SEC-SHIELD-${randomHex}-TITAN-${randomHex2}-GANG`;
+        document.getElementById('generatedLicenseKey').textContent = key;
+
+        document.getElementById('checkoutStepPayment').classList.add('hidden');
+        document.getElementById('checkoutStepSuccess').classList.remove('hidden');
+        btn.disabled = false;
+        btnText.textContent = "AUTHORIZE PAYMENT & UNLOCK DOWNLOAD";
+
+        playBeep(980, 0.25, 'sine');
+        showToast("Payment Cleared! Installer & Key Ready");
+      }, 1200);
+    }
+
+    function copyGeneratedLicense() {
+      const key = document.getElementById('generatedLicenseKey').textContent;
+      const el = document.createElement('textarea');
+      el.value = key;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+      showToast("License key copied to clipboard!");
+      playBeep(1000, 0.08);
+    }
+
+    function downloadClientInstaller() {
+      // Simulate direct payload binary download
+      const content = `SECURE SHIELD TACTICAL DEFENSE SUITE v9.42
+Activation Key: ${document.getElementById('generatedLicenseKey').textContent}
+Architecture: x64/ARM64 Certified Signed Binary
+Status: Verified & Armed.
+Welcome to the Syndicate.`;
+      
+      const blob = new Blob([content], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SecureShield_Setup_Titan_v9.42.exe';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+      showToast("Download started: SecureShield_Setup_Titan_v9.42.exe");
+      playBeep(1200, 0.15);
+    }
+
+    function simulateDirectClientDownload() {
+      const content = "SECURE SHIELD TRIAL INSTALLER\nReady to scan.";
+      const blob = new Blob([content], { type: 'application/octet-stream' });
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'SecureShield_Demo_Installer.exe';
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+      showToast("Downloaded trial demo installer binary");
+    }
+
+    // ==========================================
+    // MERCHANT BUILD UPLOADER DRAG & DROP
+    // ==========================================
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('dropZoneArea').classList.add('border-tactical-neonGreen', 'bg-tactical-neonGreen/10');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('dropZoneArea').classList.remove('border-tactical-neonGreen', 'bg-tactical-neonGreen/10');
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      document.getElementById('dropZoneArea').classList.remove('border-tactical-neonGreen', 'bg-tactical-neonGreen/10');
+      const files = e.dataTransfer.files;
+      if (files.length > 0) processUploadedBuild(files[0]);
+    }
+
+    function handleFileSelect(e) {
+      const files = e.target.files;
+      if (files.length > 0) processUploadedBuild(files[0]);
+    }
+
+    function processUploadedBuild(file) {
+      playBeep(650, 0.1);
+      const name = file.name;
+      const sizeMB = (file.size / (1024 * 1024)).toFixed(1);
+
+      document.getElementById('currentRepoVersion').textContent = name;
+      document.getElementById('repoFileSize').textContent = `${sizeMB} MB (Live Build)`;
+      document.getElementById('repoChecksum').textContent = 'SHA256:' + Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
+
+      showToast(`Uploaded new release binary: ${name}! Instant client downloads updated.`);
+    }
+
+    // ==========================================
+    // SHIELD AI ADVISOR CHATBOT
+    // ==========================================
+    function openAiAdvisor() {
+      document.getElementById('aiAdvisorModal').classList.remove('hidden');
+      playBeep(750, 0.1);
+    }
+
+    function closeAiAdvisor() {
+      document.getElementById('aiAdvisorModal').classList.add('hidden');
+    }
+
+    function sendQuickAiQuery(question) {
+      document.getElementById('aiUserInput').value = question;
+      handleAiUserSubmit(new Event('submit'));
+    }
+
+    function handleAiUserSubmit(e) {
+      e.preventDefault();
+      const input = document.getElementById('aiUserInput');
+      const text = input.value.trim();
+      if (!text) return;
+
+      appendAiChat('You', text, 'user');
+      input.value = '';
+      playBeep(550, 0.05);
+
+      setTimeout(() => {
+        let response = "";
+        const lower = text.toLowerCase();
+        if (lower.includes('fan') || lower.includes('cpu')) {
+          response = "TACTICAL DIAGNOSIS: If your CPU fans ramp to 100% on idle, a stealth background crypto-miner or unauthorized PowerShell daemon may be hijacking system cycles. Run our 'Deep PC Scan' immediately to kill rogue PID threads.";
+        } else if (lower.includes('sms') || lower.includes('linkt') || lower.includes('post')) {
+          response = "CRITICAL ALERT: Over 40,000 Australians were targeted this week by spoofed '.linkt-toll-au.top' domains. Real Australian toll operators NEVER require card verification through SMS shortlinks. Delete the message and enable our Phishing Radar.";
+        } else if (lower.includes('card') || lower.includes('skim')) {
+          response = "LOCKDOWN ACTION: 1. Immediately freeze the card via your Australian bank app. 2. Request a brand new CCV/PAN. 3. Clear your browser cached autofill forms. 4. Deploy Secure Shield’s Card Fraud Radar to block browser hook keyloggers.";
+        } else {
+          response = `OPERATIVE ADVICE: Threat vector noted for "${text}". Maintain hardened password entropy (min 16 chars), activate the Aussie Breaches lookup, and keep Secure Shield kernel monitoring enabled in background mode.`;
+        }
+        appendAiChat('Shield AI Advisor', response, 'ai');
+        playBeep(850, 0.12, 'sine');
+      }, 600);
+    }
+
+    function appendAiChat(sender, message, role) {
+      const history = document.getElementById('aiChatHistory');
+      const msgDiv = document.createElement('div');
+      if (role === 'user') {
+        msgDiv.className = 'bg-tactical-black/80 p-3 rounded-lg border border-slate-700 text-right ml-6 space-y-0.5';
+        msgDiv.innerHTML = `<span class="text-tactical-neonGreen text-[10px] font-bold block">OPERATIVE</span><p class="text-white">${message}</p>`;
+      } else {
+        msgDiv.className = 'bg-tactical-panel p-3.5 rounded-lg border border-tactical-cyberViolet/50 space-y-1 mr-4 shadow-neon-violet';
+        msgDiv.innerHTML = `<span class="text-tactical-cyberViolet font-bold text-[10px] block">SHIELD AI // TAC-ADVISOR</span><p class="text-slate-200 leading-relaxed">${message}</p>`;
+      }
+      history.appendChild(msgDiv);
+      history.scrollTop = history.scrollHeight;
+    }
+
+    // Window load check
+    window.onload = function() {
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>

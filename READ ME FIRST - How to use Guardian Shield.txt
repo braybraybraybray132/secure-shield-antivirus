@@ -1,0 +1,272 @@
+=====================================================================
+   GUARDIAN SHIELD v1.0  -  STEP-BY-STEP GUIDE (read this first!)
+=====================================================================
+
+This guide explains EVERYTHING slowly, one step at a time.
+Take your time. You cannot break anything by reading it.
+
+
+---------------------------------------------------------------------
+ PART 1.  WHAT IS GUARDIAN SHIELD?
+---------------------------------------------------------------------
+
+Guardian Shield is a security program for Windows 10 and Windows 11.
+It checks how safe your computer is, gives it a score out of 100,
+tells you what is wrong in plain English, and teaches you how to
+stay safe from hackers and scammers.
+
+It uses the antivirus that is ALREADY built into Windows (called
+Microsoft Defender) to hunt for viruses. Guardian Shield is like a
+friendly control panel on top of it, with a gamer-style design.
+
+
+---------------------------------------------------------------------
+ PART 2.  HOW TO INSTALL IT (one time only)
+---------------------------------------------------------------------
+
+You downloaded a file called  GuardianShield.zip.
+A ZIP file is like a box with several files packed inside.
+You must take the files OUT of the box before they will work.
+
+STEP 1.  Find the ZIP file. It is usually in your "Downloads" folder.
+         (Open File Explorer - the yellow folder icon on the taskbar -
+          and click "Downloads" on the left side.)
+
+STEP 2.  "Unblock" it. Windows puts a warning label on files from
+         the internet. To remove it:
+           a) RIGHT-click GuardianShield.zip
+           b) Click "Properties" (at the bottom of the menu)
+           c) At the bottom of the General tab, tick the box "Unblock"
+              (if there is no Unblock box, that's fine - skip this)
+           d) Click OK
+
+STEP 3.  Extract (unpack) it:
+           a) RIGHT-click GuardianShield.zip
+           b) Click "Extract All..."
+           c) Click "Extract"
+         A new folder called "GuardianShield" opens. Inside you will
+         see about 15 files. KEEP THEM ALL TOGETHER in this folder -
+         the program needs every one of them.
+
+STEP 4 (optional but handy).  Double-click
+         "Create Desktop Shortcut.bat"
+         A black window appears for a moment and says "Done!".
+         Press any key to close it. Now there is a Guardian Shield
+         icon on your Desktop.
+
+
+---------------------------------------------------------------------
+ PART 3.  HOW TO START IT (every time)
+---------------------------------------------------------------------
+
+STEP 1.  Double-click  "Start Guardian Shield.bat"
+         (or the Desktop shortcut if you made one).
+
+STEP 2.  The FIRST time, Windows might show a blue box saying
+         "Windows protected your PC". This is normal for new programs
+         that aren't sold in a shop. Click "More info", then
+         "Run anyway".
+
+STEP 3.  Windows asks: "Do you want to allow this app to make
+         changes to your device?"  Click YES.
+           - YES = "Admin mode": Guardian Shield can do ALL its checks.
+           - NO  = "Limited mode": it still works, but a few deep
+                   checks (Secure Boot, drive encryption, disk
+                   temperature) will say "Couldn't check".
+
+STEP 4.  The Guardian Shield window opens and AUTOMATICALLY starts a
+         scan. Wait 10-30 seconds. Your Shield Score appears in the
+         big glowing ring.
+
+
+---------------------------------------------------------------------
+ PART 4.  WHAT EACH SCREEN DOES
+---------------------------------------------------------------------
+
+The menu down the LEFT side takes you to each screen. Click a name
+to go there. Every screen has a yellow "EXPLAINED SIMPLY" box at the
+top that teaches you what it is about.
+
+== PROTECT ==
+
+DASHBOARD
+  - The big ring = your SHIELD SCORE out of 100.
+      90-100  FORTRESS - excellent
+      75-89   PROTECTED
+      60-74   SOME RISKS
+      40-59   AT RISK
+      0-39    DANGER
+  - INFECTION STATUS tells you if a virus was found:
+      CLEAN     = no viruses found
+      CLEAN*    = viruses were BLOCKED recently, none active now
+      INFECTED  = go to the Antivirus screen straight away
+  - KEY INSIGHTS = the most important things to do, plus the latest
+    security news for Australians.
+
+PC SCAN (WHAT'S WRONG)
+  - Shows all 13 security checks one by one, PROBLEMS FIRST.
+      PASS (green)  = good
+      WARNING (yellow) = could be better
+      PROBLEM (red) = fix this
+  - Each problem explains WHY it matters and HOW TO FIX IT.
+  - Many have a "FIX IT >" button that opens the right Windows
+    setting for you. After fixing, press RUN FULL SYSTEM SCAN again
+    and watch your score go up!
+
+ANTIVIRUS
+  - QUICK SCAN: checks the places viruses usually hide. 2-10 minutes.
+  - FULL SCAN: checks EVERY file. Can take an hour or more.
+  - UPDATE VIRUS DEFINITIONS: downloads the newest "wanted list" of
+    viruses. Do this before a scan.
+  - THREAT HISTORY: everything your antivirus has ever caught.
+  You can keep using your computer while a scan runs.
+
+MALWARE CHECKER
+  - Not sure a file is safe? (A download, email attachment, game mod.)
+    1. Click BROWSE... and choose the file.
+    2. Click SCAN THIS FILE.
+    3. Read the RISK score and the 6 test results.
+  - LOOK UP ON VIRUSTOTAL checks the file's "fingerprint" against
+    70+ antivirus companies. Your actual file is NOT uploaded.
+  - AUDIT STARTUP PROGRAMS lists everything that starts when your
+    computer turns on, and flags anything suspicious.
+
+HARD DISK CHECK
+  - Shows the health of each drive and how full it is.
+  - If a drive says WARNING or UNHEALTHY: BACK UP YOUR FILES TODAY.
+  - "SCAN DRIVE C: FOR ERRORS" looks for damage (it only looks - it
+    doesn't change anything).
+
+== IDENTITY ==
+
+PASSWORD LAB
+  - Type a password to see its score out of 100, and whether it is
+    "GOOD ENOUGH" or "NOT GOOD ENOUGH", with reasons.
+    (It's checked on your computer only - never saved or sent.)
+  - "HAS THIS PASSWORD BEEN LEAKED?" checks it against billions of
+    stolen passwords using a privacy trick: only the first 5
+    characters of a scrambled code are sent, never your password.
+  - GENERATE PASSWORD makes a random, unbreakable password.
+  - GENERATE EASY-TO-REMEMBER PASSPHRASE makes one from 5 random
+    words - long and strong, but easier to remember.
+
+EMAIL GUARD
+  - CHECK MY EMAIL: finds out if your email address was in a data
+    breach. It copies your email and opens the free "Have I Been
+    Pwned" website. Click the search box there, press Ctrl + V
+    (that means: hold the Ctrl key and tap V) and press Check.
+  - PHISHING DETECTOR: copy a suspicious email or text message,
+    paste it in the big box, and press ANALYSE MESSAGE. You get a
+    scam risk score and a list of red flags.
+
+AUSSIE BREACHES
+  - A list of big Australian data breaches (Optus, Medibank, Latitude,
+    Qantas, Origin Energy and more).
+  - Tick every company you've been a customer of, then press
+    "BUILD MY PERSONAL ACTION PLAN" for exact steps to protect yourself.
+  - At the bottom: free help phone numbers and websites.
+
+== INTEL ==
+
+CARD FRAUD RADAR   - credit/debit card scams going around now.
+PHISHING RADAR     - fake messages, websites and calls going around.
+THREAT FEED        - the newest security holes ("vulnerabilities"),
+                     what they mean for YOU, and how to fix them.
+                     Press DOWNLOAD LATEST THREATS for the live list.
+
+== YOU ==
+
+SHIELD AI ADVISER
+  - Type any safety question and press Enter (or SEND).
+  - Or click one of the ready-made question buttons.
+  - Ask "Why is my score low?" and it explains YOUR scan results.
+  - It works offline - your questions never leave your computer.
+
+SAFETY TIPS  - simple habits that stop most attacks, and an
+               emergency plan for if something goes wrong.
+
+MEMBERSHIP   - your gamer profile: rank, XP, badges, scan history.
+               Free for life. Type a CALLSIGN (gamer name) and press
+               SAVE. Earn XP by doing safety actions to rank up from
+               RECRUIT all the way to LEGEND.
+
+
+---------------------------------------------------------------------
+ PART 5.  A GOOD WEEKLY ROUTINE (5 minutes)
+---------------------------------------------------------------------
+
+  1. Open Guardian Shield - it scans automatically.
+  2. If your score went down, open PC SCAN and fix the red items.
+  3. Once a week: Antivirus > UPDATE VIRUS DEFINITIONS > QUICK SCAN.
+  4. Glance at the Phishing Radar for new scams.
+
+
+---------------------------------------------------------------------
+ PART 6.  HONEST LIMITS (what it can and can't do)
+---------------------------------------------------------------------
+
+  - Virus scanning uses Microsoft Defender's engine. If you use a
+    different antivirus (Norton, McAfee...), Defender may be switched
+    off - then scan with that program instead.
+  - No program can catch 100% of threats. Good habits (updates,
+    unique passwords, not clicking links) matter most.
+  - The scam, breach and vulnerability information was researched in
+    October 2026. The Threat Feed's DOWNLOAD button always fetches
+    the newest list.
+  - Checking an email INSIDE the app needs a paid Have I Been Pwned
+    key (optional - see the "Advanced" section on Email Guard).
+    Without it, the free website opens for you instead.
+  - Shield AI is a built-in expert system that works offline. It
+    knows a lot, but it isn't connected to the internet.
+  - Membership is free; there is nothing to buy.
+  - Your profile (name, XP, badges) is saved only on this computer, in:
+      C:\Users\<your name>\AppData\Roaming\GuardianShield\
+
+
+---------------------------------------------------------------------
+ PART 7.  TROUBLESHOOTING
+---------------------------------------------------------------------
+
+PROBLEM: Nothing happens when I double-click Start Guardian Shield.bat
+  - Make sure you EXTRACTED the ZIP (Part 2, Step 3). It won't run
+    from inside the ZIP.
+  - Make sure all the files are in the same folder.
+  - Wait 10 seconds - the first start can be slow.
+
+PROBLEM: A message says "Guardian Shield couldn't start"
+  - It tells you why, and saves details in:
+      C:\Users\<your name>\AppData\Roaming\GuardianShield\error.log
+  - Most common cause: a file is missing - re-extract the ZIP.
+
+PROBLEM: Lots of checks say "COULDN'T CHECK"
+  - You clicked NO when Windows asked for permission. Close Guardian
+    Shield, start it again, and click YES.
+
+PROBLEM: Antivirus buttons say "Couldn't complete that"
+  - Another antivirus is probably in charge. Use that one to scan.
+
+PROBLEM: My work/school computer blocks it
+  - Some organisations stop scripts from running. Ask your IT team.
+
+
+---------------------------------------------------------------------
+ PART 8.  WHAT'S INSIDE THE FOLDER (for the curious)
+---------------------------------------------------------------------
+
+  Start Guardian Shield.bat     - the "start button"
+  Create Desktop Shortcut.bat   - makes a Desktop icon
+  GuardianShield.ps1            - the main program (PowerShell code)
+  ui.xaml                       - the window design (colours, layout)
+  ui-core.ps1                   - building blocks, XP and badges
+  ui-protect.ps1                - Dashboard, Scan, Antivirus, Malware, Disk
+  ui-identity.ps1               - Passwords, Email, Breaches, AI, Membership
+  work-scan.ps1                 - the 13 security checks
+  work-tools.ps1                - antivirus, file, disk and online checks
+  logic.ps1                     - password and scam-detection brains
+  data-*.ps1                    - the scam, breach and tips information
+
+All of these are plain text. You can open any of them in Notepad
+(right-click > Open with > Notepad) to see exactly what the program
+does. Nothing is hidden.
+
+Stay safe, Agent.

@@ -1,0 +1,632 @@
+<Window xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Guardian Shield" Width="1320" Height="840" MinWidth="1100" MinHeight="680"
+        WindowStartupLocation="CenterScreen" ResizeMode="CanResize"
+        Background="#070B14" Foreground="#E6F1FF" FontFamily="Segoe UI" FontSize="14">
+  <WindowChrome.WindowChrome>
+    <WindowChrome CaptionHeight="44" ResizeBorderThickness="6" GlassFrameThickness="0" CornerRadius="0" UseAeroCaptionButtons="False"/>
+  </WindowChrome.WindowChrome>
+  <Window.Resources>
+    <!-- ===== Cards ===== -->
+    <Style x:Key="Card" TargetType="Border">
+      <Setter Property="Background" Value="#0E1524"/>
+      <Setter Property="BorderBrush" Value="#1C2A45"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="12"/>
+      <Setter Property="Padding" Value="20"/>
+      <Setter Property="Margin" Value="0,0,0,16"/>
+    </Style>
+    <Style x:Key="Label" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#00E5FF"/>
+      <Setter Property="FontFamily" Value="Consolas"/>
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Margin" Value="0,0,0,10"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+    <Style x:Key="Body" TargetType="TextBlock">
+      <Setter Property="Foreground" Value="#B8C6DE"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+      <Setter Property="LineHeight" Value="21"/>
+    </Style>
+    <!-- ===== Buttons ===== -->
+    <Style x:Key="Neon" TargetType="Button">
+      <Setter Property="Foreground" Value="#03121A"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="FontFamily" Value="Bahnschrift SemiBold"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Padding" Value="18,10"/>
+      <Setter Property="Margin" Value="0,0,10,10"/>
+      <Setter Property="Background">
+        <Setter.Value>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#00E5FF" Offset="0"/>
+            <GradientStop Color="#2F7BFF" Offset="1"/>
+          </LinearGradientBrush>
+        </Setter.Value>
+      </Setter>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="8" Padding="{TemplateBinding Padding}" Background="{TemplateBinding Background}">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Effect">
+                  <Setter.Value><DropShadowEffect Color="#00E5FF" BlurRadius="22" ShadowDepth="0" Opacity="0.9"/></Setter.Value>
+                </Setter>
+              </Trigger>
+              <Trigger Property="IsPressed" Value="True"><Setter TargetName="bd" Property="Opacity" Value="0.8"/></Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter TargetName="bd" Property="Opacity" Value="0.35"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="NeonPink" TargetType="Button" BasedOn="{StaticResource Neon}">
+      <Setter Property="Foreground" Value="#FFFFFF"/>
+      <Setter Property="Background">
+        <Setter.Value>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#FF2E88" Offset="0"/>
+            <GradientStop Color="#9B3DFF" Offset="1"/>
+          </LinearGradientBrush>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="Ghost" TargetType="Button">
+      <Setter Property="Foreground" Value="#00E5FF"/>
+      <Setter Property="FontFamily" Value="Bahnschrift SemiBold"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="Padding" Value="16,9"/>
+      <Setter Property="Margin" Value="0,0,10,10"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" CornerRadius="8" Padding="{TemplateBinding Padding}" Background="Transparent" BorderBrush="#00A8C0" BorderThickness="1">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#1500E5FF"/>
+                <Setter TargetName="bd" Property="BorderBrush" Value="#00E5FF"/>
+              </Trigger>
+              <Trigger Property="IsEnabled" Value="False"><Setter TargetName="bd" Property="Opacity" Value="0.35"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <Style x:Key="Chrome" TargetType="Button">
+      <Setter Property="WindowChrome.IsHitTestVisibleInChrome" Value="True"/>
+      <Setter Property="Width" Value="46"/>
+      <Setter Property="Foreground" Value="#8FA0BC"/>
+      <Setter Property="FontFamily" Value="Segoe MDL2 Assets"/>
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="Button">
+            <Border x:Name="bd" Background="Transparent">
+              <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True"><Setter TargetName="bd" Property="Background" Value="#1A2438"/></Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!-- ===== Navigation ===== -->
+    <Style x:Key="Nav" TargetType="RadioButton">
+      <Setter Property="Foreground" Value="#8FA0BC"/>
+      <Setter Property="Cursor" Value="Hand"/>
+      <Setter Property="GroupName" Value="nav"/>
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Template">
+        <Setter.Value>
+          <ControlTemplate TargetType="RadioButton">
+            <Border x:Name="bd" Background="Transparent" CornerRadius="8" Margin="10,1" Padding="12,8" BorderBrush="#00E5FF" BorderThickness="0">
+              <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="30"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+                <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="16" Text="{TemplateBinding Tag}" VerticalAlignment="Center"/>
+                <ContentPresenter Grid.Column="1" VerticalAlignment="Center"/>
+              </Grid>
+            </Border>
+            <ControlTemplate.Triggers>
+              <Trigger Property="IsMouseOver" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#101A2C"/>
+                <Setter Property="Foreground" Value="#E6F1FF"/>
+              </Trigger>
+              <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="bd" Property="Background" Value="#12243F"/>
+                <Setter TargetName="bd" Property="BorderThickness" Value="3,0,0,0"/>
+                <Setter Property="Foreground" Value="#00E5FF"/>
+              </Trigger>
+            </ControlTemplate.Triggers>
+          </ControlTemplate>
+        </Setter.Value>
+      </Setter>
+    </Style>
+    <!-- ===== Inputs ===== -->
+    <Style TargetType="TextBox">
+      <Setter Property="Background" Value="#0A1120"/>
+      <Setter Property="Foreground" Value="#E6F1FF"/>
+      <Setter Property="BorderBrush" Value="#24365A"/>
+      <Setter Property="CaretBrush" Value="#00E5FF"/>
+      <Setter Property="SelectionBrush" Value="#00E5FF"/>
+      <Setter Property="Padding" Value="10,8"/>
+      <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <Style TargetType="PasswordBox">
+      <Setter Property="Background" Value="#0A1120"/>
+      <Setter Property="Foreground" Value="#E6F1FF"/>
+      <Setter Property="BorderBrush" Value="#24365A"/>
+      <Setter Property="CaretBrush" Value="#00E5FF"/>
+      <Setter Property="Padding" Value="10,8"/>
+      <Setter Property="FontSize" Value="15"/>
+    </Style>
+    <Style TargetType="CheckBox">
+      <Setter Property="Foreground" Value="#C8D6EE"/>
+      <Setter Property="Margin" Value="0,8,20,0"/>
+      <Setter Property="Cursor" Value="Hand"/>
+    </Style>
+    <Style TargetType="ProgressBar">
+      <Setter Property="Height" Value="6"/>
+      <Setter Property="Background" Value="#1A2438"/>
+      <Setter Property="BorderThickness" Value="0"/>
+      <Setter Property="Foreground">
+        <Setter.Value>
+          <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
+            <GradientStop Color="#00E5FF" Offset="0"/>
+            <GradientStop Color="#FF2E88" Offset="1"/>
+          </LinearGradientBrush>
+        </Setter.Value>
+      </Setter>
+    </Style>
+  </Window.Resources>
+
+  <Border x:Name="RootBorder" BorderBrush="#1C2A45" BorderThickness="1">
+    <Grid>
+      <Grid.RowDefinitions><RowDefinition Height="44"/><RowDefinition Height="*"/></Grid.RowDefinitions>
+      <Grid.ColumnDefinitions><ColumnDefinition Width="250"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+
+      <!-- ===== Title bar ===== -->
+      <Border Grid.ColumnSpan="2" Background="#050810" BorderBrush="#16213A" BorderThickness="0,0,0,1">
+        <Grid>
+          <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="18,0">
+            <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA18;" Foreground="#00E5FF" FontSize="18" VerticalAlignment="Center">
+              <TextBlock.Effect><DropShadowEffect Color="#00E5FF" BlurRadius="14" ShadowDepth="0"/></TextBlock.Effect>
+            </TextBlock>
+            <TextBlock Text="GUARDIAN SHIELD" FontFamily="Bahnschrift SemiBold" FontSize="15" Margin="10,0,0,0" VerticalAlignment="Center"/>
+            <TextBlock Text="  //  CYBER DEFENCE CONSOLE  v1.0" Foreground="#4C5D7C" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center"/>
+          </StackPanel>
+          <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+            <TextBlock x:Name="TxtAdmin" FontFamily="Consolas" FontSize="12" VerticalAlignment="Center" Margin="0,0,16,0"/>
+            <Button x:Name="BtnMin" Style="{StaticResource Chrome}" Content="&#xE921;"/>
+            <Button x:Name="BtnMax" Style="{StaticResource Chrome}" Content="&#xE922;"/>
+            <Button x:Name="BtnClose" Style="{StaticResource Chrome}" Content="&#xE8BB;"/>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- ===== Sidebar ===== -->
+      <Border Grid.Row="1" Background="#0A101C" BorderBrush="#16213A" BorderThickness="0,0,1,0">
+        <DockPanel>
+          <Border DockPanel.Dock="Top" Margin="14,16,14,10" Padding="14" CornerRadius="12" BorderBrush="#2A3C63" BorderThickness="1">
+            <Border.Background>
+              <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                <GradientStop Color="#13203A" Offset="0"/>
+                <GradientStop Color="#1D0F2E" Offset="1"/>
+              </LinearGradientBrush>
+            </Border.Background>
+            <StackPanel>
+              <TextBlock x:Name="TxtPlayerName" Text="AGENT" FontFamily="Bahnschrift SemiBold" FontSize="16" TextTrimming="CharacterEllipsis"/>
+              <TextBlock x:Name="TxtRank" Text="RECRUIT  LVL 1" Foreground="#FF2E88" FontFamily="Consolas" FontSize="12" Margin="0,2,0,8"/>
+              <ProgressBar x:Name="XpBar" Maximum="100" Value="0"/>
+              <TextBlock x:Name="TxtXp" Text="0 XP" Foreground="#7F8EA8" FontSize="11" Margin="0,4,0,0"/>
+            </StackPanel>
+          </Border>
+          <TextBlock DockPanel.Dock="Bottom" Text="Protected by Microsoft Defender engine + Guardian Shield checks" Foreground="#3E4C66" FontSize="10" TextWrapping="Wrap" Margin="18,6,18,12"/>
+          <ScrollViewer VerticalScrollBarVisibility="Auto">
+            <StackPanel>
+              <TextBlock Text="  PROTECT" Foreground="#4C5D7C" FontFamily="Consolas" FontSize="11" Margin="14,6,0,4"/>
+              <RadioButton x:Name="Nav_Dashboard" Style="{StaticResource Nav}" Tag="&#xE80F;" Content="Dashboard"/>
+              <RadioButton x:Name="Nav_Scan" Style="{StaticResource Nav}" Tag="&#xE9D9;" Content="PC Scan (What's Wrong)"/>
+              <RadioButton x:Name="Nav_AV" Style="{StaticResource Nav}" Tag="&#xEA18;" Content="Antivirus"/>
+              <RadioButton x:Name="Nav_Malware" Style="{StaticResource Nav}" Tag="&#xEBE8;" Content="Malware Checker"/>
+              <RadioButton x:Name="Nav_Disk" Style="{StaticResource Nav}" Tag="&#xEDA2;" Content="Hard Disk Check"/>
+              <TextBlock Text="  IDENTITY" Foreground="#4C5D7C" FontFamily="Consolas" FontSize="11" Margin="14,10,0,4"/>
+              <RadioButton x:Name="Nav_Pass" Style="{StaticResource Nav}" Tag="&#xE72E;" Content="Password Lab"/>
+              <RadioButton x:Name="Nav_Email" Style="{StaticResource Nav}" Tag="&#xE715;" Content="Email Guard"/>
+              <RadioButton x:Name="Nav_Breach" Style="{StaticResource Nav}" Tag="&#xE716;" Content="Aussie Breaches"/>
+              <TextBlock Text="  INTEL" Foreground="#4C5D7C" FontFamily="Consolas" FontSize="11" Margin="14,10,0,4"/>
+              <RadioButton x:Name="Nav_Card" Style="{StaticResource Nav}" Tag="&#xE8C7;" Content="Card Fraud Radar"/>
+              <RadioButton x:Name="Nav_Phish" Style="{StaticResource Nav}" Tag="&#xE7BA;" Content="Phishing Radar"/>
+              <RadioButton x:Name="Nav_Vulns" Style="{StaticResource Nav}" Tag="&#xE774;" Content="Threat Feed"/>
+              <TextBlock Text="  YOU" Foreground="#4C5D7C" FontFamily="Consolas" FontSize="11" Margin="14,10,0,4"/>
+              <RadioButton x:Name="Nav_AI" Style="{StaticResource Nav}" Tag="&#xE99A;" Content="Shield AI Adviser"/>
+              <RadioButton x:Name="Nav_Tips" Style="{StaticResource Nav}" Tag="&#xEA80;" Content="Safety Tips"/>
+              <RadioButton x:Name="Nav_Member" Style="{StaticResource Nav}" Tag="&#xE734;" Content="Membership"/>
+            </StackPanel>
+          </ScrollViewer>
+        </DockPanel>
+      </Border>
+
+      <!-- ===== Content ===== -->
+      <Grid Grid.Row="1" Grid.Column="1">
+        <Grid.Background>
+          <DrawingBrush TileMode="Tile" Viewport="0,0,40,40" ViewportUnits="Absolute">
+            <DrawingBrush.Drawing>
+              <GeometryDrawing Geometry="M0,0 L40,0 M0,0 L0,40">
+                <GeometryDrawing.Pen><Pen Brush="#0C1424" Thickness="1"/></GeometryDrawing.Pen>
+              </GeometryDrawing>
+            </DrawingBrush.Drawing>
+          </DrawingBrush>
+        </Grid.Background>
+
+        <!-- DASHBOARD -->
+        <ScrollViewer x:Name="Page_Dashboard" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Dashboard"/>
+            <Grid Margin="0,0,0,16">
+              <Grid.ColumnDefinitions><ColumnDefinition Width="340"/><ColumnDefinition Width="16"/><ColumnDefinition Width="*"/></Grid.ColumnDefinitions>
+              <Border Style="{StaticResource Card}" Margin="0">
+                <StackPanel>
+                  <TextBlock Text="SHIELD SCORE" Style="{StaticResource Label}" HorizontalAlignment="Center"/>
+                  <Grid Width="240" Height="240">
+                    <Ellipse Width="220" Height="220" Stroke="#16213A" StrokeThickness="16"/>
+                    <Ellipse x:Name="ScanSpinner" Width="238" Height="238" Stroke="#00E5FF" StrokeThickness="2" StrokeDashArray="2 6" Opacity="0" RenderTransformOrigin="0.5,0.5"/>
+                    <Path x:Name="RingArc" Stroke="#00E5FF" StrokeThickness="16" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                      <TextBlock x:Name="TxtScore" Text="--" FontFamily="Bahnschrift SemiBold" FontSize="64" HorizontalAlignment="Center"/>
+                      <TextBlock Text="/ 100" Foreground="#7F8EA8" FontFamily="Consolas" HorizontalAlignment="Center"/>
+                      <TextBlock x:Name="TxtGrade" Text="NOT SCANNED" FontFamily="Consolas" FontSize="13" Foreground="#7F8EA8" HorizontalAlignment="Center" Margin="0,6,0,0"/>
+                    </StackPanel>
+                  </Grid>
+                  <Button x:Name="BtnRunScan" Style="{StaticResource Neon}" Content="RUN FULL SYSTEM SCAN" Margin="0,16,0,0"/>
+                  <TextBlock x:Name="TxtScanStatus" Text="Press the button to scan your PC (about 10-30 seconds)." Foreground="#7F8EA8" TextWrapping="Wrap" TextAlignment="Center" Margin="0,10,0,0" FontSize="12"/>
+                </StackPanel>
+              </Border>
+              <UniformGrid Grid.Column="2" Columns="2" Rows="2">
+                <Border Style="{StaticResource Card}" Margin="0,0,8,8"><StackPanel>
+                  <TextBlock Text="ANTIVIRUS" Style="{StaticResource Label}"/>
+                  <TextBlock x:Name="TileAvVal" Text="--" FontFamily="Bahnschrift SemiBold" FontSize="24"/>
+                  <TextBlock x:Name="TileAvSub" Text="Run a scan" Style="{StaticResource Body}" FontSize="12"/>
+                </StackPanel></Border>
+                <Border Style="{StaticResource Card}" Margin="8,0,0,8"><StackPanel>
+                  <TextBlock Text="INFECTION STATUS" Style="{StaticResource Label}"/>
+                  <TextBlock x:Name="TileThreatVal" Text="--" FontFamily="Bahnschrift SemiBold" FontSize="24"/>
+                  <TextBlock x:Name="TileThreatSub" Text="Run a scan" Style="{StaticResource Body}" FontSize="12"/>
+                </StackPanel></Border>
+                <Border Style="{StaticResource Card}" Margin="0,8,8,0"><StackPanel>
+                  <TextBlock Text="FIREWALL" Style="{StaticResource Label}"/>
+                  <TextBlock x:Name="TileFwVal" Text="--" FontFamily="Bahnschrift SemiBold" FontSize="24"/>
+                  <TextBlock x:Name="TileFwSub" Text="Run a scan" Style="{StaticResource Body}" FontSize="12"/>
+                </StackPanel></Border>
+                <Border Style="{StaticResource Card}" Margin="8,8,0,0"><StackPanel>
+                  <TextBlock Text="WINDOWS UPDATES" Style="{StaticResource Label}"/>
+                  <TextBlock x:Name="TileUpdVal" Text="--" FontFamily="Bahnschrift SemiBold" FontSize="24"/>
+                  <TextBlock x:Name="TileUpdSub" Text="Run a scan" Style="{StaticResource Body}" FontSize="12"/>
+                </StackPanel></Border>
+              </UniformGrid>
+            </Grid>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="KEY INSIGHTS" Style="{StaticResource Label}"/>
+                <StackPanel x:Name="DashInsights"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- PC SCAN -->
+        <ScrollViewer x:Name="Page_Scan" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Scan"/>
+            <WrapPanel>
+              <Button x:Name="BtnRunScan2" Style="{StaticResource Neon}" Content="RUN FULL SYSTEM SCAN"/>
+              <TextBlock x:Name="TxtScanSummary" VerticalAlignment="Center" Foreground="#8FA0BC" Margin="6,0,0,10"/>
+            </WrapPanel>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="YOUR COMPUTER" Style="{StaticResource Label}"/>
+                <TextBlock x:Name="TxtSysInfo" Text="Run a scan to see your computer's details." Style="{StaticResource Body}" FontFamily="Consolas"/>
+              </StackPanel>
+            </Border>
+            <StackPanel x:Name="ScanList"/>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- ANTIVIRUS -->
+        <ScrollViewer x:Name="Page_AV" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_AV"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="PROTECTION STATUS" Style="{StaticResource Label}"/>
+                <StackPanel x:Name="AvStatus"/>
+                <WrapPanel Margin="0,14,0,0">
+                  <Button x:Name="BtnQuickScan" Style="{StaticResource Neon}" Content="QUICK SCAN (2-10 MIN)"/>
+                  <Button x:Name="BtnFullScan" Style="{StaticResource NeonPink}" Content="FULL SCAN (CAN TAKE 1+ HOURS)"/>
+                  <Button x:Name="BtnUpdateSigs" Style="{StaticResource Ghost}" Content="UPDATE VIRUS DEFINITIONS"/>
+                  <Button x:Name="BtnAvRefresh" Style="{StaticResource Ghost}" Content="REFRESH"/>
+                  <Button x:Name="BtnOpenSecurity" Style="{StaticResource Ghost}" Content="OPEN WINDOWS SECURITY"/>
+                </WrapPanel>
+                <ProgressBar x:Name="AvProgress" IsIndeterminate="True" Visibility="Collapsed" Margin="0,6,0,0"/>
+                <TextBlock x:Name="TxtAvResult" TextWrapping="Wrap" Margin="0,10,0,0"/>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="THREAT HISTORY (WHAT YOUR ANTIVIRUS HAS CAUGHT)" Style="{StaticResource Label}"/>
+                <StackPanel x:Name="AvHistory"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- MALWARE -->
+        <ScrollViewer x:Name="Page_Malware" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Malware"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="CHECK ONE FILE" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="Pick any file - a download, an email attachment, a game mod, a 'free' program - and Guardian Shield will run 6 different tests on it."/>
+                <Grid Margin="0,12,0,0">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <TextBox x:Name="TxtFilePath" IsReadOnly="True" Text="No file chosen yet"/>
+                  <Button x:Name="BtnPickFile" Grid.Column="1" Style="{StaticResource Ghost}" Content="BROWSE..." Margin="10,0,0,0"/>
+                </Grid>
+                <WrapPanel Margin="0,12,0,0">
+                  <Button x:Name="BtnCheckFile" Style="{StaticResource Neon}" Content="SCAN THIS FILE"/>
+                  <Button x:Name="BtnVirusTotal" Style="{StaticResource Ghost}" Content="LOOK UP ON VIRUSTOTAL" Visibility="Collapsed"/>
+                </WrapPanel>
+                <ProgressBar x:Name="MalProgress" IsIndeterminate="True" Visibility="Collapsed"/>
+                <StackPanel x:Name="MalResult" Margin="0,12,0,0"/>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="STARTUP PROGRAMS AUDIT" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="Malware loves to start itself every time your PC turns on. This lists everything that starts automatically and checks who made it (its digital signature)."/>
+                <Button x:Name="BtnStartupAudit" Style="{StaticResource Neon}" Content="AUDIT STARTUP PROGRAMS" HorizontalAlignment="Left" Margin="0,12,0,12"/>
+                <StackPanel x:Name="StartupList"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- DISK -->
+        <ScrollViewer x:Name="Page_Disk" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Disk"/>
+            <WrapPanel>
+              <Button x:Name="BtnDiskRefresh" Style="{StaticResource Neon}" Content="CHECK DISK HEALTH"/>
+              <Button x:Name="BtnDiskScan" Style="{StaticResource Ghost}" Content="SCAN SYSTEM DRIVE FOR ERRORS"/>
+            </WrapPanel>
+            <ProgressBar x:Name="DiskProgress" IsIndeterminate="True" Visibility="Collapsed"/>
+            <TextBlock x:Name="TxtDiskScan" TextWrapping="Wrap" Margin="0,8,0,12"/>
+            <StackPanel x:Name="DiskList"/>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- PASSWORD -->
+        <ScrollViewer x:Name="Page_Pass" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Pass"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="PASSWORD CHECKER" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="Type a password below. It is checked on THIS computer only - it is never saved and never sent anywhere."/>
+                <Grid Margin="0,12,0,0">
+                  <PasswordBox x:Name="PwdInput" FontSize="17"/>
+                  <TextBox x:Name="PwdVisible" FontSize="17" Visibility="Collapsed"/>
+                </Grid>
+                <CheckBox x:Name="ChkShowPwd" Content="Show password"/>
+                <Grid Margin="0,16,0,0">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <ProgressBar x:Name="PwdMeter" Height="12" Maximum="100" VerticalAlignment="Center"/>
+                  <TextBlock x:Name="TxtPwdScore" Grid.Column="1" Text="0/100" FontFamily="Bahnschrift SemiBold" FontSize="20" Margin="14,0,0,0"/>
+                </Grid>
+                <TextBlock x:Name="TxtPwdVerdict" FontFamily="Bahnschrift SemiBold" FontSize="22" Margin="0,10,0,2"/>
+                <TextBlock x:Name="TxtCrackTime" Style="{StaticResource Body}"/>
+                <StackPanel x:Name="PwdFeedback" Margin="0,8,0,0"/>
+                <Button x:Name="BtnPwned" Style="{StaticResource Neon}" Content="HAS THIS PASSWORD BEEN LEAKED?" HorizontalAlignment="Left" Margin="0,14,0,0"/>
+                <TextBlock x:Name="TxtPwnedResult" TextWrapping="Wrap" Margin="0,6,0,0"/>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="STRONG PASSWORD GENERATOR" Style="{StaticResource Label}"/>
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="Auto"/><ColumnDefinition Width="*"/><ColumnDefinition Width="50"/></Grid.ColumnDefinitions>
+                  <TextBlock Text="Length:" VerticalAlignment="Center" Margin="0,0,12,0"/>
+                  <Slider x:Name="SldLen" Grid.Column="1" Minimum="8" Maximum="64" Value="20" IsSnapToTickEnabled="True" TickFrequency="1" VerticalAlignment="Center"/>
+                  <TextBlock x:Name="TxtLen" Grid.Column="2" Text="20" FontFamily="Bahnschrift SemiBold" FontSize="18" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                </Grid>
+                <WrapPanel>
+                  <CheckBox x:Name="ChkUpper" Content="Capitals (A-Z)" IsChecked="True"/>
+                  <CheckBox x:Name="ChkLower" Content="Small letters (a-z)" IsChecked="True"/>
+                  <CheckBox x:Name="ChkDigits" Content="Numbers (0-9)" IsChecked="True"/>
+                  <CheckBox x:Name="ChkSymbols" Content="Symbols (!@#...)" IsChecked="True"/>
+                  <CheckBox x:Name="ChkAmbig" Content="Avoid look-alikes (l 1 I O 0)"/>
+                </WrapPanel>
+                <TextBox x:Name="TxtGenerated" IsReadOnly="True" FontFamily="Consolas" FontSize="20" Margin="0,14,0,0"/>
+                <WrapPanel Margin="0,12,0,0">
+                  <Button x:Name="BtnGenerate" Style="{StaticResource Neon}" Content="GENERATE PASSWORD"/>
+                  <Button x:Name="BtnPassphrase" Style="{StaticResource NeonPink}" Content="GENERATE EASY-TO-REMEMBER PASSPHRASE"/>
+                  <Button x:Name="BtnCopyPwd" Style="{StaticResource Ghost}" Content="COPY"/>
+                  <Button x:Name="BtnTestGen" Style="{StaticResource Ghost}" Content="TEST ITS STRENGTH"/>
+                </WrapPanel>
+                <TextBlock x:Name="TxtGenInfo" Style="{StaticResource Body}"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- EMAIL -->
+        <ScrollViewer x:Name="Page_Email" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Email"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="HAS MY EMAIL BEEN IN A DATA BREACH?" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="Type your email address:"/>
+                <TextBox x:Name="TxtEmail" Margin="0,6,0,0"/>
+                <WrapPanel Margin="0,12,0,0">
+                  <Button x:Name="BtnEmailCheck" Style="{StaticResource Neon}" Content="CHECK MY EMAIL"/>
+                  <Button x:Name="BtnOpenHibp" Style="{StaticResource Ghost}" Content="OPEN HAVE I BEEN PWNED"/>
+                  <Button x:Name="BtnOpenMozilla" Style="{StaticResource Ghost}" Content="OPEN MOZILLA MONITOR"/>
+                </WrapPanel>
+                <ProgressBar x:Name="EmailProgress" IsIndeterminate="True" Visibility="Collapsed"/>
+                <TextBlock x:Name="TxtEmailResult" TextWrapping="Wrap" Margin="0,6,0,6"/>
+                <StackPanel x:Name="EmailBreaches"/>
+                <Expander Header="Advanced (optional): add a Have I Been Pwned API key to check inside this app" Foreground="#8FA0BC" Margin="0,12,0,0">
+                  <StackPanel Margin="0,10,0,0">
+                    <TextBlock Style="{StaticResource Body}" Text="Have I Been Pwned is the world's biggest free breach database. Checking an email from inside another app needs a small paid key (from haveibeenpwned.com/API/Key). WITHOUT a key, the buttons above open the free website for you and copy your email so you just paste it. Your key is stored encrypted on this PC only."/>
+                    <Grid Margin="0,10,0,0">
+                      <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                      <PasswordBox x:Name="TxtHibpKey"/>
+                      <Button x:Name="BtnSaveKey" Grid.Column="1" Style="{StaticResource Ghost}" Content="SAVE KEY" Margin="10,0,0,0"/>
+                    </Grid>
+                  </StackPanel>
+                </Expander>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="IS THIS EMAIL OR TEXT A SCAM?  (PHISHING DETECTOR)" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="Copy a suspicious email or text message and paste it below. Guardian Shield checks it for more than 15 warning signs that scammers use. Nothing is sent anywhere."/>
+                <TextBlock Style="{StaticResource Body}" Text="Who sent it? (email address or phone number - optional)" Margin="0,10,0,4"/>
+                <TextBox x:Name="TxtSender"/>
+                <TextBlock Style="{StaticResource Body}" Text="The message:" Margin="0,10,0,4"/>
+                <TextBox x:Name="TxtEmailBody" AcceptsReturn="True" TextWrapping="Wrap" Height="180" VerticalScrollBarVisibility="Auto" VerticalContentAlignment="Top"/>
+                <Button x:Name="BtnAnalyseEmail" Style="{StaticResource Neon}" Content="ANALYSE MESSAGE" HorizontalAlignment="Left" Margin="0,12,0,0"/>
+                <StackPanel x:Name="EmailVerdict"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- BREACHES -->
+        <ScrollViewer x:Name="Page_Breach" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Breach"/>
+            <TextBlock Text="STEP 1:  TICK EVERY COMPANY YOU HAVE BEEN A CUSTOMER OF" Style="{StaticResource Label}"/>
+            <StackPanel x:Name="BreachList"/>
+            <Button x:Name="BtnBreachPlan" Style="{StaticResource Neon}" Content="STEP 2:  BUILD MY PERSONAL ACTION PLAN" HorizontalAlignment="Left"/>
+            <StackPanel x:Name="BreachPlan" Margin="0,8,0,0"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="FREE HELP IN AUSTRALIA" Style="{StaticResource Label}"/>
+                <StackPanel x:Name="HelpList"/>
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- CARD / PHISH / VULNS / TIPS -->
+        <ScrollViewer x:Name="Page_Card" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32"><StackPanel x:Name="Hdr_Card"/><StackPanel x:Name="CardList"/></StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="Page_Phish" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32"><StackPanel x:Name="Hdr_Phish"/><StackPanel x:Name="PhishList"/></StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="Page_Vulns" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Vulns"/>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="LIVE FEED: HOLES CRIMINALS ARE USING RIGHT NOW" Style="{StaticResource Label}"/>
+                <TextBlock Style="{StaticResource Body}" Text="This downloads the US government's official list of 'Known Exploited Vulnerabilities' (from CISA) - security holes that are confirmed to be attacked in the real world - and shows the ones added in the last 30 days, with what each one means for YOU."/>
+                <Button x:Name="BtnLoadKev" Style="{StaticResource Neon}" Content="DOWNLOAD LATEST THREATS" HorizontalAlignment="Left" Margin="0,12,0,8"/>
+                <ProgressBar x:Name="KevProgress" IsIndeterminate="True" Visibility="Collapsed"/>
+                <TextBlock x:Name="TxtKevStatus" Style="{StaticResource Body}"/>
+                <StackPanel x:Name="VulnLive" Margin="0,8,0,0"/>
+              </StackPanel>
+            </Border>
+            <TextBlock Text="OCTOBER 2026 BRIEFING" Style="{StaticResource Label}"/>
+            <StackPanel x:Name="VulnCurated"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="Page_Tips" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32"><StackPanel x:Name="Hdr_Tips"/><StackPanel x:Name="TipsList"/></StackPanel>
+        </ScrollViewer>
+
+        <!-- AI ADVISER -->
+        <ScrollViewer x:Name="Page_AI" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_AI"/>
+            <Border Style="{StaticResource Card}" Padding="0">
+              <Grid>
+                <Grid.RowDefinitions><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/><RowDefinition Height="Auto"/></Grid.RowDefinitions>
+                <ScrollViewer x:Name="ChatScroll" Height="430" VerticalScrollBarVisibility="Auto" Padding="18">
+                  <StackPanel x:Name="ChatPanel"/>
+                </ScrollViewer>
+                <WrapPanel x:Name="ChatChips" Grid.Row="1" Margin="14,8,14,0"/>
+                <Grid Grid.Row="2" Margin="14,4,14,14">
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <TextBox x:Name="ChatInput"/>
+                  <Button x:Name="BtnSend" Grid.Column="1" Style="{StaticResource Neon}" Content="SEND" Margin="10,0,0,0"/>
+                </Grid>
+              </Grid>
+            </Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- MEMBERSHIP -->
+        <ScrollViewer x:Name="Page_Member" VerticalScrollBarVisibility="Auto" Visibility="Collapsed">
+          <StackPanel Margin="32,24,32,32">
+            <StackPanel x:Name="Hdr_Member"/>
+            <Border CornerRadius="16" Padding="26" Margin="0,0,0,16" BorderBrush="#FF2E88" BorderThickness="1">
+              <Border.Background>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                  <GradientStop Color="#101C34" Offset="0"/>
+                  <GradientStop Color="#240E36" Offset="1"/>
+                </LinearGradientBrush>
+              </Border.Background>
+              <Border.Effect><DropShadowEffect Color="#FF2E88" BlurRadius="30" ShadowDepth="0" Opacity="0.35"/></Border.Effect>
+              <Grid>
+                <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                <StackPanel>
+                  <TextBlock Text="GUARDIAN SHIELD  //  MEMBER CARD" FontFamily="Consolas" Foreground="#FF2E88"/>
+                  <TextBlock x:Name="MemName" Text="AGENT" FontFamily="Bahnschrift SemiBold" FontSize="36" Margin="0,6,0,0"/>
+                  <TextBlock x:Name="MemRank" Text="RECRUIT" FontFamily="Consolas" FontSize="16" Foreground="#00E5FF"/>
+                  <ProgressBar x:Name="MemXpBar" Height="10" Maximum="100" Width="420" HorizontalAlignment="Left" Margin="0,14,0,4"/>
+                  <TextBlock x:Name="MemXpText" Foreground="#8FA0BC"/>
+                  <TextBlock x:Name="MemSince" Foreground="#5C6C88" FontSize="12" Margin="0,6,0,0"/>
+                </StackPanel>
+                <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                  <TextBlock FontFamily="Segoe MDL2 Assets" Text="&#xEA18;" FontSize="96" Foreground="#00E5FF" HorizontalAlignment="Center">
+                    <TextBlock.Effect><DropShadowEffect Color="#00E5FF" BlurRadius="30" ShadowDepth="0"/></TextBlock.Effect>
+                  </TextBlock>
+                  <TextBlock Text="FREE LIFETIME MEMBER" FontFamily="Consolas" FontSize="12" Foreground="#FFC23D" HorizontalAlignment="Center" Margin="0,8,0,0"/>
+                </StackPanel>
+              </Grid>
+            </Border>
+            <Border Style="{StaticResource Card}">
+              <StackPanel>
+                <TextBlock Text="YOUR CALLSIGN (GAMER NAME)" Style="{StaticResource Label}"/>
+                <Grid>
+                  <Grid.ColumnDefinitions><ColumnDefinition Width="*"/><ColumnDefinition Width="Auto"/></Grid.ColumnDefinitions>
+                  <TextBox x:Name="TxtNameEdit" MaxLength="24"/>
+                  <Button x:Name="BtnSaveName" Grid.Column="1" Style="{StaticResource Ghost}" Content="SAVE" Margin="10,0,0,0"/>
+                </Grid>
+              </StackPanel>
+            </Border>
+            <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="BADGES" Style="{StaticResource Label}"/><WrapPanel x:Name="BadgePanel"/></StackPanel></Border>
+            <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="RANK LADDER" Style="{StaticResource Label}"/><StackPanel x:Name="RankLadder"/></StackPanel></Border>
+            <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="HOW TO EARN XP" Style="{StaticResource Label}"/><StackPanel x:Name="XpHowTo"/></StackPanel></Border>
+            <Border Style="{StaticResource Card}"><StackPanel><TextBlock Text="SCAN HISTORY" Style="{StaticResource Label}"/><StackPanel x:Name="HistoryList"/></StackPanel></Border>
+          </StackPanel>
+        </ScrollViewer>
+
+        <!-- TOAST -->
+        <Border x:Name="Toast" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,24,24" Padding="18,12" CornerRadius="10" Background="#101A2E" BorderBrush="#00E5FF" BorderThickness="1" Visibility="Collapsed">
+          <TextBlock x:Name="ToastText" FontFamily="Bahnschrift SemiBold" FontSize="14"/>
+        </Border>
+      </Grid>
+    </Grid>
+  </Border>
+</Window>
